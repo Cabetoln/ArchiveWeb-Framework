@@ -14,6 +14,32 @@
       "PriceHistories": []
     },
     {
+      "Id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "Name": "Camiseta Vestiaire Pour Dames",
+      "Brand": "Enfants Riches Déprimés",
+      "Category": "Camisetas",
+      "ImageUrl": "https://image.goat.com/transform/v1/attachments/product_template_additional_pictures/images/113/557/667/original/1695993_01.jpg.jpeg?action=crop&width=800",
+      "ProductUrl": "https://www.farfetch.com/br/shopping/men/enfants-riches-deprimes-camiseta-vestiaire-pour-dames-item-32723180.aspx",
+      "CurrentPrice": 792.00,
+      "Currency": "USD",
+      "CreatedAt": "2026-05-14T00:00:00Z",
+      "UpdatedAt": "2026-05-14T00:00:00Z",
+      "PriceHistories": []
+    },
+    {
+      "Id": "95df83c2-9008-484c-94d3-782c3045ed54",
+      "Name": "store soho 18th anniversary shark full zip hoodie - gray",
+      "Brand": "A Bathing Ape",
+      "Category": "Jaquetas",
+      "ImageUrl": "https://images.stockx.com/images/BAPE-Store-SOHO-18th-Anniversary-Shark-Full-Zip-Hoodie-Gray.jpg?fit=fill&bg=FFFFFF&w=576&h=384&q=60&dpr=1&trim=color&updated_at=1686933813",
+      "ProductUrl": "https://editorialist.com/p/bape-1st-camo-shark-full-zip-hoodie-37710913/?lid=33489483",
+      "CurrentPrice": 1105.00,
+      "Currency": "USD",
+      "CreatedAt": "2026-05-14T00:00:00Z",
+      "UpdatedAt": "2026-05-14T00:00:00Z",
+      "PriceHistories": []
+    },
+    {
       "Id": "23a2495f-e8d8-46ff-874e-09e1f38902b9",
       "Name": "Kit 3 camisetas com logo bordado",
       "Brand": "Polo Ralph Lauren",

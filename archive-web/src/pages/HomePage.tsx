@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { items, wishlist } from '../api/client'
 import type { FashionItemResponse, PagedResult, WishlistEntryResponse } from '../types'
@@ -14,6 +14,10 @@ export default function HomePage() {
   const [category, setCategory] = useState('')
   const [page, setPage] = useState(1)
   const [applied, setApplied] = useState({ query: '', brand: '', category: '' })
+
+  const [imageResults, setImageResults] = useState<FashionItemResponse[] | null>(null)
+  const [imageLoading, setImageLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const params = {
     ...(applied.query && { query: applied.query }),
@@ -64,6 +68,7 @@ export default function HomePage() {
     e.preventDefault()
     setApplied({ query, brand, category })
     setPage(1)
+    setImageResults(null)
   }
 
   function handleClear() {
@@ -72,7 +77,39 @@ export default function HomePage() {
     setCategory('')
     setApplied({ query: '', brand: '', category: '' })
     setPage(1)
+    setImageResults(null)
   }
+
+  async function handleImageSearch(e: React.ChangeEvent<HTMLInputElement>) {
+  const file = e.target.files?.[0]
+  if (!file) return
+
+  setImageLoading(true)
+  setImageResults(null)
+
+  const form = new FormData()
+  form.append('image', file)
+
+  try {
+    const res = await fetch('http://localhost:8001/search', { method: 'POST', body: form })
+    const data = await res.json()
+    const normalized = data.map((item: any) => ({
+      ...item,
+      id: item.Id,
+      name: item.Name,
+      brand: item.Brand,
+      category: item.Category,
+      imageUrl: item.ImageUrl,
+      productUrl: item.ProductUrl,
+      currentPrice: item.CurrentPrice,
+      currency: item.Currency,
+    }))
+    setImageResults(normalized)
+  } finally {
+    setImageLoading(false)
+    e.target.value = ''
+  }
+}
 
   const hasFilters = applied.query || applied.brand || applied.category
 
@@ -112,7 +149,22 @@ export default function HomePage() {
         >
           BUSCAR
         </button>
-        {hasFilters && (
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleImageSearch}
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className="border border-border text-muted font-display tracking-widest px-5 py-2.5 text-sm hover:border-cream hover:text-cream transition-colors"
+          title="Buscar por imagem"
+        >
+          IMAGEM
+        </button>
+        {(hasFilters || imageResults) && (
           <button
             type="button"
             onClick={handleClear}
@@ -123,13 +175,29 @@ export default function HomePage() {
         )}
       </form>
 
-      {data && (
-        <p className="text-xs text-muted tracking-widest uppercase mb-8">
-          {data.totalCount} {data.totalCount === 1 ? 'item encontrado' : 'itens encontrados'}
-        </p>
-      )}
-
-      {isLoading ? (
+      {imageLoading ? (
+        <div className="flex items-center justify-center py-40">
+          <span className="font-display text-2xl tracking-widest text-muted animate-pulse">
+            ANALISANDO...
+          </span>
+        </div>
+      ) : imageResults ? (
+        <>
+          <p className="text-xs text-muted tracking-widest uppercase mb-8">
+            {imageResults.length} {imageResults.length === 1 ? 'item similar' : 'itens similares'}
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {imageResults.map((item) => (
+              <ItemCard
+                key={item.id ?? item.id}
+                item={item}
+                inWishlist={wishlistIds.has(item.id)}
+                onToggleWishlist={user ? handleToggleWishlist : undefined}
+              />
+            ))}
+          </div>
+        </>
+      ) : isLoading ? (
         <div className="flex items-center justify-center py-40">
           <span className="font-display text-2xl tracking-widest text-muted animate-pulse">
             CARREGANDO...
@@ -143,19 +211,26 @@ export default function HomePage() {
           <p className="text-xs text-muted tracking-wider">Tente outros filtros de busca</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data?.items.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              inWishlist={wishlistIds.has(item.id)}
-              onToggleWishlist={user ? handleToggleWishlist : undefined}
-            />
-          ))}
-        </div>
+        <>
+          {data && (
+            <p className="text-xs text-muted tracking-widest uppercase mb-8">
+              {data.totalCount} {data.totalCount === 1 ? 'item encontrado' : 'itens encontrados'}
+            </p>
+          )}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {data?.items.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                inWishlist={wishlistIds.has(item.id)}
+                onToggleWishlist={user ? handleToggleWishlist : undefined}
+              />
+            ))}
+          </div>
+        </>
       )}
 
-      {data && data.totalPages > 1 && (
+      {!imageResults && data && data.totalPages > 1 && (
         <div className="flex items-center justify-center gap-3 mt-14">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}

@@ -1,5 +1,4 @@
 using Archive.API.DTOs;
-using Archive.API.Exceptions;
 using Archive.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,13 +6,11 @@ using System.Security.Claims;
 
 namespace Archive.API.Controllers;
 
-// ── Wishlist ──────────────────────────────────────────────────────────────────
-
 [ApiController]
 [Route("api/wishlist")]
 [Authorize]
 [Produces("application/json")]
-public class WishlistController(JsonCatalogStore catalogStore, JsonUserStore userStore) : ControllerBase
+public class WishlistController(IWishlistService wishlistService) : ControllerBase
 {
     private Guid UserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -22,24 +19,7 @@ public class WishlistController(JsonCatalogStore catalogStore, JsonUserStore use
     [ProducesResponseType(typeof(IEnumerable<WishlistEntryResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        var items = await catalogStore.GetItemsAsync();
-        var entries = (await userStore.GetWishlistAsync(UserId))
-            .OrderByDescending(w => w.AddedAt)
-            .Join(
-                items,
-                w => w.FashionItemId,
-                i => i.Id,
-                (w, i) => new WishlistEntryResponse(
-                    w.Id,
-                    w.FashionItemId,
-                    i.Name,
-                    i.Brand,
-                    i.CurrentPrice,
-                    i.ImageUrl,
-                    w.AddedAt,
-                    w.Note))
-            .ToList();
-
+        var entries = await wishlistService.GetWishlistAsync(UserId);
         return Ok(entries);
     }
 
@@ -49,18 +29,8 @@ public class WishlistController(JsonCatalogStore catalogStore, JsonUserStore use
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Add([FromBody] AddToWishlistRequest req)
     {
-        var item = await catalogStore.GetItemByIdAsync(req.FashionItemId);
-        if (item is null) return NotFound(new { error = "Item não encontrado." });
-
-        if (await userStore.WishlistExistsAsync(UserId, req.FashionItemId))
-            throw new BusinessException("Item já está na wishlist.", StatusCodes.Status409Conflict);
-
-        var entry = await userStore.AddWishlistAsync(UserId, req.FashionItemId, req.Note);
-        if (entry is null) return Unauthorized();
-
-        return CreatedAtAction(nameof(GetAll), new WishlistEntryResponse(
-            entry.Id, item.Id, item.Name, item.Brand,
-            item.CurrentPrice, item.ImageUrl, entry.AddedAt, entry.Note));
+        var entry = await wishlistService.AddAsync(UserId, req.FashionItemId, req.Note);
+        return CreatedAtAction(nameof(GetAll), entry);
     }
 
     /// <summary>Remove um item da wishlist.</summary>
@@ -69,7 +39,7 @@ public class WishlistController(JsonCatalogStore catalogStore, JsonUserStore use
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove(Guid entryId)
     {
-        if (!await userStore.RemoveWishlistAsync(UserId, entryId)) return NotFound();
+        if (!await wishlistService.RemoveAsync(UserId, entryId)) return NotFound();
         return NoContent();
     }
 }

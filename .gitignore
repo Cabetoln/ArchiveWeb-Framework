@@ -12,3 +12,6 @@ Archivé.API/DataStore/*.json
 # Editor files
 .vscode/
 *.log
+
+# model
+sam3.pt

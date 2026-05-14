@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/cabeto/engenharia_softwareI/ArchiveWeb/Archivé.API/Archivé.API.csproj": {}
+    "/home/kafka/HATE/materias/5sem/eng/ArchiveWeb/Archivé.API/Archivé.API.csproj": {}
   },
   "projects": {
-    "/home/cabeto/engenharia_softwareI/ArchiveWeb/Archivé.API/Archivé.API.csproj": {
+    "/home/kafka/HATE/materias/5sem/eng/ArchiveWeb/Archivé.API/Archivé.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/cabeto/engenharia_softwareI/ArchiveWeb/Archivé.API/Archivé.API.csproj",
+        "projectUniqueName": "/home/kafka/HATE/materias/5sem/eng/ArchiveWeb/Archivé.API/Archivé.API.csproj",
         "projectName": "Archive.API",
-        "projectPath": "/home/cabeto/engenharia_softwareI/ArchiveWeb/Archivé.API/Archivé.API.csproj",
-        "packagesPath": "/home/cabeto/.nuget/packages/",
-        "outputPath": "/home/cabeto/engenharia_softwareI/ArchiveWeb/Archivé.API/obj/",
+        "projectPath": "/home/kafka/HATE/materias/5sem/eng/ArchiveWeb/Archivé.API/Archivé.API.csproj",
+        "packagesPath": "/home/kafka/.nuget/packages/",
+        "outputPath": "/home/kafka/HATE/materias/5sem/eng/ArchiveWeb/Archivé.API/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/cabeto/.nuget/NuGet/NuGet.Config"
+          "/home/kafka/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -71,6 +71,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[8.0.25, 8.0.25]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.25, 8.0.25]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -79,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/cabeto/.dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.419/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

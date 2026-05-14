@@ -1,5 +1,4 @@
 using Archive.API.DTOs;
-using Archive.API.Exceptions;
 using Archive.API.Models;
 using Archive.API.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -13,30 +12,16 @@ namespace Archive.API.Controllers;
 [ApiController]
 [Route("api/auth")]
 [Produces("application/json")]
-public class AuthController(JsonUserStore userStore) : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly JsonUserStore _userStore = userStore;
-
     /// <summary>Registra um novo usuário.</summary>
     [HttpPost("register")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register([FromBody] RegisterRequest req)
     {
-        if (await _userStore.EmailExistsAsync(req.Email))
-            throw new BusinessException("E-mail já cadastrado.", StatusCodes.Status409Conflict);
-
-        var user = new User
-        {
-            Name = req.Name.Trim(),
-            Email = req.Email.Trim().ToLower(),
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.Password)
-        };
-
-        await _userStore.AddAsync(user);
-
+        var user = await authService.RegisterAsync(req.Name, req.Email, req.Password);
         await SignInAsync(user);
-
         return CreatedAtAction(nameof(Me), ToResponse(user));
     }
 
@@ -46,13 +31,10 @@ public class AuthController(JsonUserStore userStore) : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginRequest req)
     {
-        var user = await _userStore.GetByEmailAsync(req.Email);
-
-        if (user is null || !BCrypt.Net.BCrypt.Verify(req.Password, user.PasswordHash))
-            return Unauthorized(new { error = "Credenciais inválidas." });
+        var user = await authService.AuthenticateAsync(req.Email, req.Password);
+        if (user is null) return Unauthorized(new { error = "Credenciais inválidas." });
 
         await SignInAsync(user);
-
         return Ok(ToResponse(user));
     }
 
@@ -74,7 +56,7 @@ public class AuthController(JsonUserStore userStore) : ControllerBase
     public async Task<IActionResult> Me()
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var user = await _userStore.GetByIdAsync(userId);
+        var user = await authService.GetByIdAsync(userId);
         return user is null ? Unauthorized() : Ok(ToResponse(user));
     }
 

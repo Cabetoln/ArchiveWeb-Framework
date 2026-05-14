@@ -1,5 +1,4 @@
 using Archive.API.DTOs;
-using Archive.API.Models;
 using Archive.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,47 +8,15 @@ namespace Archive.API.Controllers;
 [ApiController]
 [Route("api/items")]
 [Produces("application/json")]
-public class ItemsController(JsonCatalogStore store) : ControllerBase
+public class ItemsController(ICatalogService catalogService) : ControllerBase
 {
     /// <summary>Busca itens de moda com filtros opcionais.</summary>
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<FashionItemResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Search([FromQuery] SearchItemsRequest req)
     {
-        var query = (await store.GetItemsAsync()).AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(req.Query))
-        {
-            var term = req.Query.ToLower();
-            query = query.Where(f =>
-                f.Name.ToLower().Contains(term) ||
-                f.Brand.ToLower().Contains(term));
-        }
-
-        if (!string.IsNullOrWhiteSpace(req.Brand))
-            query = query.Where(f => f.Brand.ToLower() == req.Brand.ToLower());
-
-        if (!string.IsNullOrWhiteSpace(req.Category))
-            query = query.Where(f => f.Category != null && f.Category.ToLower() == req.Category.ToLower());
-
-        if (req.MinPrice.HasValue)
-            query = query.Where(f => f.CurrentPrice >= req.MinPrice.Value);
-
-        if (req.MaxPrice.HasValue)
-            query = query.Where(f => f.CurrentPrice <= req.MaxPrice.Value);
-
-        var total = query.Count();
-        var page = Math.Max(1, req.Page);
-        var pageSize = Math.Clamp(req.PageSize, 1, 100);
-
-        var items = query
-            .OrderBy(f => f.Name)
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(f => ToResponse(f))
-            .ToList();
-
-        return Ok(new PagedResult<FashionItemResponse>(items, total, page, pageSize));
+        var result = await catalogService.SearchAsync(req);
+        return Ok(result);
     }
 
     /// <summary>Busca um item específico pelo ID.</summary>
@@ -58,8 +25,12 @@ public class ItemsController(JsonCatalogStore store) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var item = await store.GetItemByIdAsync(id);
-        return item is null ? NotFound() : Ok(ToResponse(item));
+        var item = await catalogService.GetByIdAsync(id);
+        if (item is null) return NotFound();
+
+        return Ok(new FashionItemResponse(
+            item.Id, item.Name, item.Brand, item.Category,
+            item.ImageUrl, item.ProductUrl, item.CurrentPrice, item.Currency, item.UpdatedAt));
     }
 
     /// <summary>Cadastra um novo item de moda.</summary>
@@ -68,20 +39,12 @@ public class ItemsController(JsonCatalogStore store) : ControllerBase
     [ProducesResponseType(typeof(FashionItemResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CreateFashionItemRequest req)
     {
-        var item = new FashionItem
-        {
-            Name = req.Name.Trim(),
-            Brand = req.Brand.Trim(),
-            Category = req.Category?.Trim(),
-            ImageUrl = req.ImageUrl,
-            ProductUrl = req.ProductUrl,
-            CurrentPrice = req.CurrentPrice,
-            Currency = req.Currency
-        };
+        var item = await catalogService.CreateAsync(req);
 
-        await store.AddItemWithInitialPriceAsync(item);
-
-        return CreatedAtAction(nameof(GetById), new { id = item.Id }, ToResponse(item));
+        return CreatedAtAction(nameof(GetById), new { id = item.Id },
+            new FashionItemResponse(
+                item.Id, item.Name, item.Brand, item.Category,
+                item.ImageUrl, item.ProductUrl, item.CurrentPrice, item.Currency, item.UpdatedAt));
     }
 
     /// <summary>Retorna o histórico de preços de um item.</summary>
@@ -93,23 +56,8 @@ public class ItemsController(JsonCatalogStore store) : ControllerBase
         [FromQuery] DateTime? from,
         [FromQuery] DateTime? to)
     {
-        if (!await store.ItemExistsAsync(id))
-            return NotFound();
-
-        var query = (await store.GetPriceHistoryAsync(id)).AsQueryable();
-
-        if (from.HasValue)
-            query = query.Where(p => p.RecordedAt >= from.Value.ToUniversalTime());
-
-        if (to.HasValue)
-            query = query.Where(p => p.RecordedAt <= to.Value.ToUniversalTime());
-
-        var history = query
-            .OrderBy(p => p.RecordedAt)
-            .Select(p => new PriceHistoryResponse(p.Id, p.Price, p.Currency, p.RecordedAt, p.Source))
-            .ToList();
-
-        return Ok(history);
+        var history = await catalogService.GetPriceHistoryAsync(id, from, to);
+        return history is null ? NotFound() : Ok(history);
     }
 
     /// <summary>Adiciona um novo registro de preço para um item.</summary>
@@ -119,16 +67,9 @@ public class ItemsController(JsonCatalogStore store) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AddPrice(Guid id, [FromBody] AddPriceRequest req)
     {
-        var entry = await store.AddPriceAsync(id, req.Price, req.Currency, req.Source);
+        var entry = await catalogService.AddPriceAsync(id, req);
         if (entry is null) return NotFound();
 
-        return CreatedAtAction(
-            nameof(GetPriceHistory),
-            new { id },
-            new PriceHistoryResponse(entry.Id, entry.Price, entry.Currency, entry.RecordedAt, entry.Source));
+        return CreatedAtAction(nameof(GetPriceHistory), new { id }, entry);
     }
-
-    private static FashionItemResponse ToResponse(FashionItem f) =>
-        new(f.Id, f.Name, f.Brand, f.Category, f.ImageUrl, f.ProductUrl,
-            f.CurrentPrice, f.Currency, f.UpdatedAt);
 }
