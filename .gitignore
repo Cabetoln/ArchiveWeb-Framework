@@ -2,16 +2,29 @@
 **/bin/
 **/obj/
 
-# Node modules and Vite cache
+# Node modules, build output and Vite cache
 archive-web/node_modules/
+archive-web/dist/
 archive-web/.vite/
 
 # Local environment and data files
-Archivé.API/DataStore/*.json
+Archive.API/DataStore/*.json
 
-# Editor files
+# Editor and IDE files
 .vscode/
+.vs/
+*.user
+*.suo
+*.lscache
 *.log
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # model
 sam3.pt
+catalog_embeddings.pt
+__pycache__/
+*.pyc
+runs/
