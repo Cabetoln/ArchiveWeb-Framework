@@ -22,7 +22,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         var user = await authService.RegisterAsync(req.Name, req.Email, req.Password);
         await SignInAsync(user);
-        return CreatedAtAction(nameof(Me), ToResponse(user));
+        return CreatedAtAction(nameof(Me), null, ToResponse(user));
     }
 
     /// <summary>Autentica o usuário e inicia a sessão.</summary>

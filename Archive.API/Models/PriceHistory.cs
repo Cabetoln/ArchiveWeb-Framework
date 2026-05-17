@@ -8,6 +8,4 @@ public class PriceHistory
     public string Currency { get; set; } = "BRL";
     public DateTime RecordedAt { get; set; } = DateTime.UtcNow;
     public string? Source { get; set; }
-
-    public FashionItem FashionItem { get; set; } = null!;
 }

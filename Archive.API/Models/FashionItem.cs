@@ -12,6 +12,4 @@ public class FashionItem
     public string Currency { get; set; } = "BRL";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    public ICollection<PriceHistory> PriceHistories { get; set; } = [];
 }
