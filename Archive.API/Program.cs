@@ -17,6 +17,7 @@ builder.Services.AddSingleton<IItemRepository, JsonItemRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<ICatalogService, CatalogService>();
 builder.Services.AddSingleton<IWishlistService, WishlistService>();
+builder.Services.AddSingleton<IFavoriteBrandsService, FavoriteBrandsService>();
 
 // ── Authentication ────────────────────────────────────────────────────────────
 builder.Services
