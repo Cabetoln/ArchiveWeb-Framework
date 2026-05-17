@@ -43,3 +43,14 @@ export interface PriceHistoryResponse {
   recordedAt: string
   source: string | null
 }
+
+export interface PriceAlertResponse {
+  id: string
+  fashionItemId: string
+  itemName: string
+  brand: string
+  targetPrice: number
+  currentPrice: number
+  currency: string
+  createdAt: string
+}

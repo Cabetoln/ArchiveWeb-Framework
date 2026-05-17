@@ -7,8 +7,8 @@ import {
   type ReactNode,
 } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { wishlist } from '../api/client'
-import type { WishlistEntryResponse } from '../types'
+import { wishlist, priceAlerts } from '../api/client'
+import type { WishlistEntryResponse, PriceAlertResponse } from '../types'
 import { useAuth } from './AuthContext'
 
 export interface PriceNotification {
@@ -21,6 +21,7 @@ export interface PriceNotification {
   currency: string
   changedAt: string
   read: boolean
+  type: 'change' | 'alert'
 }
 
 interface NotificationContextValue {
@@ -32,6 +33,7 @@ interface NotificationContextValue {
 
 const STORAGE_PRICES = 'archive_last_prices'
 const STORAGE_NOTIFS = 'archive_notifications'
+const STORAGE_TRIGGERED_ALERTS = 'archive_triggered_alerts'
 
 const NotificationContext = createContext<NotificationContextValue | null>(null)
 
@@ -55,6 +57,16 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     refetchIntervalInBackground: false,
   })
 
+  // Poll price alerts every 30s
+  const { data: alertsData } = useQuery<PriceAlertResponse[]>({
+    queryKey: ['price-alerts'],
+    queryFn: () => priceAlerts.getAll(),
+    enabled: !!user,
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: false,
+  })
+
+  // Detecta mudanças de preço na wishlist
   useEffect(() => {
     if (!wishlistData || wishlistData.length === 0) return
 
@@ -68,14 +80,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       const last = lastPrices[entry.fashionItemId]
 
       if (last === undefined) {
-        // First time seeing item — just store, no alert
         updatedPrices[entry.fashionItemId] = entry.currentPrice
         continue
       }
 
       if (last !== entry.currentPrice) {
         newNotifs.push({
-          id: `${entry.fashionItemId}-${Date.now()}`,
+          id: `change-${entry.fashionItemId}-${Date.now()}`,
           fashionItemId: entry.fashionItemId,
           itemName: entry.itemName,
           brand: entry.brand,
@@ -84,6 +95,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           currency: 'BRL',
           changedAt: new Date().toISOString(),
           read: false,
+          type: 'change',
         })
         updatedPrices[entry.fashionItemId] = entry.currentPrice
       }
@@ -100,10 +112,50 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [wishlistData])
 
-  // Clear stored prices when user logs out
+  // Verifica alertas de preço atingidos
+  useEffect(() => {
+    if (!alertsData || alertsData.length === 0) return
+
+    const triggeredRaw = localStorage.getItem(STORAGE_TRIGGERED_ALERTS)
+    const alreadyTriggered: string[] = triggeredRaw ? JSON.parse(triggeredRaw) : []
+
+    const newNotifs: PriceNotification[] = []
+    const newTriggered = [...alreadyTriggered]
+
+    for (const alert of alertsData) {
+      if (alert.currentPrice <= alert.targetPrice && !alreadyTriggered.includes(alert.id)) {
+        newNotifs.push({
+          id: `alert-${alert.id}`,
+          fashionItemId: alert.fashionItemId,
+          itemName: alert.itemName,
+          brand: alert.brand,
+          oldPrice: alert.targetPrice,
+          newPrice: alert.currentPrice,
+          currency: alert.currency,
+          changedAt: new Date().toISOString(),
+          read: false,
+          type: 'alert',
+        })
+        newTriggered.push(alert.id)
+      }
+    }
+
+    localStorage.setItem(STORAGE_TRIGGERED_ALERTS, JSON.stringify(newTriggered))
+
+    if (newNotifs.length > 0) {
+      setNotifications((prev) => {
+        const merged = [...newNotifs, ...prev].slice(0, 50)
+        localStorage.setItem(STORAGE_NOTIFS, JSON.stringify(merged))
+        return merged
+      })
+    }
+  }, [alertsData])
+
+  // Limpa dados locais ao fazer logout
   useEffect(() => {
     if (!user) {
       localStorage.removeItem(STORAGE_PRICES)
+      localStorage.removeItem(STORAGE_TRIGGERED_ALERTS)
     }
   }, [user])
 

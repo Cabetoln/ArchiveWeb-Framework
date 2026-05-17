@@ -64,6 +64,19 @@ export const favoriteBrands = {
     request(`/api/favorite-brands/${encodeURIComponent(brand)}`, { method: 'DELETE' }),
 }
 
+export const priceAlerts = {
+  getAll: () => request<import('../types').PriceAlertResponse[]>('/api/price-alerts'),
+
+  set: (fashionItemId: string, targetPrice: number) =>
+    request('/api/price-alerts', {
+      method: 'POST',
+      body: JSON.stringify({ fashionItemId, targetPrice }),
+    }),
+
+  remove: (id: string) =>
+    request(`/api/price-alerts/${id}`, { method: 'DELETE' }),
+}
+
 export const wishlist = {
   getAll: () => request('/api/wishlist'),
 

@@ -10,4 +10,5 @@ public class User
 
     public ICollection<WishlistEntry> WishlistEntries { get; set; } = [];
     public List<string> FavoriteBrands { get; set; } = [];
+    public List<PriceAlert> PriceAlerts { get; set; } = [];
 }

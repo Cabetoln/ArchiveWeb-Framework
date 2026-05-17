@@ -18,6 +18,7 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<ICatalogService, CatalogService>();
 builder.Services.AddSingleton<IWishlistService, WishlistService>();
 builder.Services.AddSingleton<IFavoriteBrandsService, FavoriteBrandsService>();
+builder.Services.AddSingleton<IPriceAlertService, PriceAlertService>();
 
 // ── Authentication ────────────────────────────────────────────────────────────
 builder.Services
@@ -82,7 +83,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
 
-app.UseStaticFiles();
 app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();

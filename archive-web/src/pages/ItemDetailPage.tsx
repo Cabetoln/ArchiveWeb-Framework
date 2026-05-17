@@ -1,7 +1,8 @@
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { items, wishlist } from '../api/client'
-import type { FashionItemResponse, PriceHistoryResponse, WishlistEntryResponse } from '../types'
+import { items, wishlist, priceAlerts } from '../api/client'
+import type { FashionItemResponse, PriceHistoryResponse, WishlistEntryResponse, PriceAlertResponse } from '../types'
 import { useAuth } from '../context/AuthContext'
 
 function fmt(price: number, currency = 'BRL') {
@@ -42,6 +43,30 @@ export default function ItemDetailPage() {
   const removeMutation = useMutation({
     mutationFn: () => wishlist.remove(wishlistEntry!.id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['wishlist'] }),
+  })
+
+  // Alertas de preço
+  const [targetInput, setTargetInput] = useState('')
+
+  const { data: alertsData } = useQuery<PriceAlertResponse[]>({
+    queryKey: ['price-alerts'],
+    queryFn: () => priceAlerts.getAll(),
+    enabled: !!user,
+  })
+
+  const currentAlert = alertsData?.find((a) => a.fashionItemId === id)
+
+  const setAlertMutation = useMutation({
+    mutationFn: (targetPrice: number) => priceAlerts.set(id!, targetPrice),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['price-alerts'] })
+      setTargetInput('')
+    },
+  })
+
+  const removeAlertMutation = useMutation({
+    mutationFn: () => priceAlerts.remove(currentAlert!.id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['price-alerts'] }),
   })
 
   if (isLoading) {
@@ -184,6 +209,54 @@ export default function ItemDetailPage() {
               </button>
             )}
           </div>
+
+          {/* Alerta de preço */}
+          {user && (
+            <div className="mt-8 pt-8 border-t border-border">
+              <p className="text-xs tracking-widest text-muted uppercase mb-4">Alerta de Preço</p>
+
+              {currentAlert ? (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted tracking-wider mb-1">Avise-me quando chegar em</p>
+                    <p className="font-display text-2xl tracking-wider text-cream">
+                      {fmt(currentAlert.targetPrice, currency)}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => removeAlertMutation.mutate()}
+                    disabled={removeAlertMutation.isPending}
+                    className="text-xs tracking-widest text-muted uppercase border border-border px-4 py-2 hover:border-cream hover:text-cream transition-colors disabled:opacity-40"
+                  >
+                    Remover
+                  </button>
+                </div>
+              ) : (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    const val = parseFloat(targetInput.replace(',', '.'))
+                    if (!isNaN(val) && val > 0) setAlertMutation.mutate(val)
+                  }}
+                  className="flex gap-2"
+                >
+                  <input
+                    value={targetInput}
+                    onChange={(e) => setTargetInput(e.target.value)}
+                    placeholder="Preço alvo (ex: 299,90)"
+                    className="flex-1 bg-surface border border-border px-4 py-2.5 text-cream text-sm focus:outline-none focus:border-cream/40 transition-colors placeholder:text-muted"
+                  />
+                  <button
+                    type="submit"
+                    disabled={setAlertMutation.isPending || !targetInput}
+                    className="bg-cream text-bg font-display tracking-widest px-5 py-2.5 text-sm hover:bg-cream/90 transition-colors disabled:opacity-40"
+                  >
+                    DEFINIR
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
 
           {/* Price History */}
           {history && history.length > 0 && (

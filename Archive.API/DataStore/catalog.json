@@ -2539,10 +2539,10 @@
       "Category": "Calcados",
       "ImageUrl": "https://cdn-images.farfetch-contents.com/21/34/45/25/21344525_51300809_480.jpg",
       "ProductUrl": "https://www.farfetch.com/br/shopping/men/onitsuka-tiger-tenis-mexico-66-kill-bill-2023-item-21344525.aspx",
-      "CurrentPrice": 3180.0,
+      "CurrentPrice": 2900,
       "Currency": "BRL",
       "CreatedAt": "2026-05-12T13:42:02.7542053Z",
-      "UpdatedAt": "2026-05-12T13:42:02.7542055Z"
+      "UpdatedAt": "2026-05-17T21:19:25.5022281Z"
     },
     {
       "Id": "5fa038f6-8dc0-4775-8c9c-ebc155ca10a0",
@@ -15709,6 +15709,54 @@
       "Currency": "BRL",
       "RecordedAt": "2026-05-17T19:00:07.1698941Z",
       "Source": "manual"
+    },
+    {
+      "Id": "96d2387c-c548-4585-a7e3-e7ecb5a5b122",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 2000,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:16:56.0312824Z",
+      "Source": "Manual"
+    },
+    {
+      "Id": "266d083a-615e-41ae-8177-5140ff8dc86a",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 1999,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:18:14.070862Z",
+      "Source": "Manual"
+    },
+    {
+      "Id": "0f797786-9792-41e3-830a-f3dec5c24fcf",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 3001,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:18:36.9997095Z",
+      "Source": "Manual"
+    },
+    {
+      "Id": "51c19851-a9eb-4868-8a32-89d7ff8782be",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 3000,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:18:51.0721017Z",
+      "Source": "Manual"
+    },
+    {
+      "Id": "3e169b13-1a23-444b-9c7a-ad02ac9e27e2",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 2980,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:18:59.756169Z",
+      "Source": "Manual"
+    },
+    {
+      "Id": "aec566b1-71a4-4ac7-b8ce-52ffac30d48e",
+      "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+      "Price": 2900,
+      "Currency": "BRL",
+      "RecordedAt": "2026-05-17T21:19:25.5022276Z",
+      "Source": "Manual"
     }
   ]
 }

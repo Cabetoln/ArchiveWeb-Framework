@@ -6,7 +6,8 @@
     "PasswordHash": "$2a$11$4vF2IVt0Gxf.JoQtnAfiHeESWk2SIKTR/inGgVXm3415rpIL1fH1O",
     "CreatedAt": "2026-04-06T23:48:38.9816644Z",
     "WishlistEntries": [],
-    "FavoriteBrands": []
+    "FavoriteBrands": [],
+    "PriceAlerts": []
   },
   {
     "Id": "cb747e49-fa17-4527-bb3e-8fa8aa21ddcd",
@@ -23,7 +24,8 @@
         "Note": null
       }
     ],
-    "FavoriteBrands": []
+    "FavoriteBrands": [],
+    "PriceAlerts": []
   },
   {
     "Id": "60b106b8-57c8-4c56-a001-3879b11933ca",
@@ -32,7 +34,8 @@
     "PasswordHash": "$2a$11$ewB4M8A5rEcY7bvlHpI0jeRLEFfKvzAfNUS5Ea4qGXWVoSQL46HBS",
     "CreatedAt": "2026-04-22T20:14:41.934465Z",
     "WishlistEntries": [],
-    "FavoriteBrands": []
+    "FavoriteBrands": [],
+    "PriceAlerts": []
   },
   {
     "Id": "d7522320-0dc5-4c97-af62-9dfb5975598f",
@@ -41,7 +44,8 @@
     "PasswordHash": "$2a$11$nBl8F42tndUmI1g2woPaSuXIpHwGO8qZKwjOPTw5xIh2Ohmsiegla",
     "CreatedAt": "2026-04-22T20:16:30.8100091Z",
     "WishlistEntries": [],
-    "FavoriteBrands": []
+    "FavoriteBrands": [],
+    "PriceAlerts": []
   },
   {
     "Id": "8f6f3465-6315-4f7a-98ef-1aa3515c7e54",
@@ -61,7 +65,8 @@
     "FavoriteBrands": [
       "SANDRO",
       "Polo Ralph Lauren"
-    ]
+    ],
+    "PriceAlerts": []
   },
   {
     "Id": "41e69562-a71e-470c-9ba2-c21fa2468631",
@@ -70,7 +75,8 @@
     "PasswordHash": "$2a$11$KWf7fm9HqxXbl00GVxAF9.9PXzPePUzC1XJ2o3Mz.hi46RQCSvrFq",
     "CreatedAt": "2026-05-06T21:57:02.4354272Z",
     "WishlistEntries": [],
-    "FavoriteBrands": []
+    "FavoriteBrands": [],
+    "PriceAlerts": []
   },
   {
     "Id": "7b5654bf-2015-45b7-8ddd-d45432a61efb",
@@ -91,6 +97,7 @@
       "Moncler",
       "Onitsuka Tiger",
       "Alden"
-    ]
+    ],
+    "PriceAlerts": []
   }
 ]
