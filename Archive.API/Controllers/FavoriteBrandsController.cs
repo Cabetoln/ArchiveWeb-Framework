@@ -26,7 +26,7 @@ public class FavoriteBrandsController(IFavoriteBrandsService service) : Controll
         if (!await service.AddAsync(UserId, brand))
             return Conflict(new { error = "Marca já está nos favoritos." });
 
-        return StatusCode(StatusCodes.Status201Created);
+        return NoContent();
     }
 
     [HttpDelete("{brand}")]

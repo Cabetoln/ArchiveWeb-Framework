@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("clip-ViT-B-32")
 
 # Carrega seus itens (pode vir do banco ou de um JSON)
-with open("Archivé.API/DataStore/catalog.json") as f:
+with open("Archive.API/DataStore/catalog.json") as f:
     items = json.load(f)["FashionItems"]
 
 embeddings = []
