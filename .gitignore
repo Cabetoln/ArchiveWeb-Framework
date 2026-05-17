@@ -7,9 +7,6 @@ archive-web/node_modules/
 archive-web/dist/
 archive-web/.vite/
 
-# Local environment and data files
-Archive.API/DataStore/*.json
-
 # Editor and IDE files
 .vscode/
 .vs/

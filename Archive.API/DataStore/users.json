@@ -1,0 +1,88 @@
+[
+  {
+    "Id": "54b252c2-5573-42ca-8bb4-f665961135c6",
+    "Name": "Teste User",
+    "Email": "teste@example.com",
+    "PasswordHash": "$2a$11$4vF2IVt0Gxf.JoQtnAfiHeESWk2SIKTR/inGgVXm3415rpIL1fH1O",
+    "CreatedAt": "2026-04-06T23:48:38.9816644Z",
+    "WishlistEntries": []
+  },
+  {
+    "Id": "cb747e49-fa17-4527-bb3e-8fa8aa21ddcd",
+    "Name": "kafka",
+    "Email": "ponta@direita.com",
+    "PasswordHash": "$2a$11$dfyxP18xeKt4QfLD7Yg5i.cVcQ7RWm85noxofOMPbbEhUf0WNcv7i",
+    "CreatedAt": "2026-04-06T23:54:06.1569005Z",
+    "WishlistEntries": [
+      {
+        "Id": "11e76711-a5d9-4b65-a72f-40f86a614610",
+        "UserId": "cb747e49-fa17-4527-bb3e-8fa8aa21ddcd",
+        "FashionItemId": "33333333-3333-3333-3333-333333333333",
+        "AddedAt": "2026-04-07T00:02:32.8541846Z",
+        "Note": null,
+        "User": null,
+        "FashionItem": null
+      }
+    ]
+  },
+  {
+    "Id": "60b106b8-57c8-4c56-a001-3879b11933ca",
+    "Name": "Teste2",
+    "Email": "novo2@teste.com",
+    "PasswordHash": "$2a$11$ewB4M8A5rEcY7bvlHpI0jeRLEFfKvzAfNUS5Ea4qGXWVoSQL46HBS",
+    "CreatedAt": "2026-04-22T20:14:41.934465Z",
+    "WishlistEntries": []
+  },
+  {
+    "Id": "d7522320-0dc5-4c97-af62-9dfb5975598f",
+    "Name": "pikachu",
+    "Email": "pokemon@gmail.com",
+    "PasswordHash": "$2a$11$nBl8F42tndUmI1g2woPaSuXIpHwGO8qZKwjOPTw5xIh2Ohmsiegla",
+    "CreatedAt": "2026-04-22T20:16:30.8100091Z",
+    "WishlistEntries": []
+  },
+  {
+    "Id": "8f6f3465-6315-4f7a-98ef-1aa3515c7e54",
+    "Name": "gwen",
+    "Email": "gwen@gmail.com",
+    "PasswordHash": "$2a$11$icmhjTteZE1D4vtT0kN/8Odf/HRGb0hTkD29NlYS93LRQ8IBxhVL.",
+    "CreatedAt": "2026-04-22T23:03:05.7965652Z",
+    "WishlistEntries": [
+      {
+        "Id": "c5465ef2-a516-4f34-a751-5f52c4e160ff",
+        "UserId": "8f6f3465-6315-4f7a-98ef-1aa3515c7e54",
+        "FashionItemId": "11111111-1111-1111-1111-111111111111",
+        "AddedAt": "2026-05-06T23:49:30.624262Z",
+        "Note": null,
+        "User": null,
+        "FashionItem": null
+      }
+    ]
+  },
+  {
+    "Id": "41e69562-a71e-470c-9ba2-c21fa2468631",
+    "Name": "aa",
+    "Email": "abecelino@a",
+    "PasswordHash": "$2a$11$KWf7fm9HqxXbl00GVxAF9.9PXzPePUzC1XJ2o3Mz.hi46RQCSvrFq",
+    "CreatedAt": "2026-05-06T21:57:02.4354272Z",
+    "WishlistEntries": []
+  },
+  {
+    "Id": "7b5654bf-2015-45b7-8ddd-d45432a61efb",
+    "Name": "pedro",
+    "Email": "pedro@gmail.com",
+    "PasswordHash": "$2a$11$CO7O6ov/TYP0DeIhR9N3HO9aSuiEkn.7q878JINzoPYYkYd0U4.Ka",
+    "CreatedAt": "2026-05-11T17:22:33.7760462Z",
+    "WishlistEntries": [
+      {
+        "Id": "d9a4f1c2-37e3-4fd1-bfe4-c1a3775a8d26",
+        "UserId": "7b5654bf-2015-45b7-8ddd-d45432a61efb",
+        "FashionItemId": "11111111-1111-1111-1111-111111111111",
+        "AddedAt": "2026-05-11T17:22:38.3011574Z",
+        "Note": null,
+        "User": null,
+        "FashionItem": null
+      }
+    ]
+  }
+]
