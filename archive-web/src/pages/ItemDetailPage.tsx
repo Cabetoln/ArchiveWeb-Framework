@@ -297,7 +297,7 @@ export default function ItemDetailPage() {
                         })}
                       </span>
                       <span className="text-xs text-muted uppercase tracking-widest">
-                        {entry.source ?? '—'}
+                        {'—'}
                       </span>
                       <span className="font-display text-base tracking-wider text-cream">
                         {fmt(entry.price, entry.currency)}
