@@ -2,7 +2,14 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { items, wishlist, priceAlerts } from '../api/client'
-import type { FashionItemResponse, PriceHistoryResponse, WishlistEntryResponse, PriceAlertResponse } from '../types'
+import type {
+  FashionItemResponse,
+  PriceHistoryResponse,
+  WishlistEntryResponse,
+  PriceAlertResponse,
+  SeasonalInsightResponse,
+} from '../types'
+import SeasonalInsightCard from '../components/SeasonalInsightCard'
 import { useAuth } from '../context/AuthContext'
 
 function fmt(price: number, currency = 'BRL') {
@@ -24,6 +31,12 @@ export default function ItemDetailPage() {
   const { data: history } = useQuery<PriceHistoryResponse[]>({
     queryKey: ['price-history', id],
     queryFn: () => items.getPriceHistory(id!) as Promise<PriceHistoryResponse[]>,
+    enabled: !!id,
+  })
+
+  const { data: seasonalInsight } = useQuery<SeasonalInsightResponse>({
+    queryKey: ['seasonal-insight', id],
+    queryFn: () => items.getSeasonalInsight(id!) as Promise<SeasonalInsightResponse>,
     enabled: !!id,
   })
 
@@ -158,6 +171,8 @@ export default function ItemDetailPage() {
               </p>
             )}
           </div>
+
+          {seasonalInsight && <SeasonalInsightCard insight={seasonalInsight} />}
 
           {/* Min / Max */}
           {prices.length > 1 && (

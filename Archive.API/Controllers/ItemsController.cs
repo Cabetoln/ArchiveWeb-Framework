@@ -8,7 +8,7 @@ namespace Archive.API.Controllers;
 [ApiController]
 [Route("api/items")]
 [Produces("application/json")]
-public class ItemsController(ICatalogService catalogService) : ControllerBase
+public class ItemsController(ICatalogService catalogService, ISeasonalAnalysisService seasonalAnalysisService) : ControllerBase
 {
     /// <summary>Busca itens de moda com filtros opcionais.</summary>
     [HttpGet]
@@ -58,6 +58,15 @@ public class ItemsController(ICatalogService catalogService) : ControllerBase
     {
         var history = await catalogService.GetPriceHistoryAsync(id, from, to);
         return history is null ? NotFound() : Ok(history);
+    }
+
+    [HttpGet("{id:guid}/seasonal-insight")]
+    [ProducesResponseType(typeof(SeasonalInsightResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSeasonalInsight(Guid id)
+    {
+        var insight = await seasonalAnalysisService.GetInsightAsync(id);
+        return insight is null ? NotFound() : Ok(insight);
     }
 
     /// <summary>Adiciona um novo registro de preço para um item.</summary>

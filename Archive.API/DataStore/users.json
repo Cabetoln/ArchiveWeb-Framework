@@ -91,6 +91,13 @@
         "FashionItemId": "11111111-1111-1111-1111-111111111111",
         "AddedAt": "2026-05-11T17:22:38.3011574Z",
         "Note": null
+      },
+      {
+        "Id": "d75f77f3-d6c0-4b2f-8e2c-c9063867a07e",
+        "UserId": "7b5654bf-2015-45b7-8ddd-d45432a61efb",
+        "FashionItemId": "a6465443-7743-4872-bffc-1109e33bb8b4",
+        "AddedAt": "2026-05-18T04:27:52.3898349Z",
+        "Note": null
       }
     ],
     "FavoriteBrands": [

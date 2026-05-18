@@ -19,6 +19,7 @@ builder.Services.AddSingleton<ICatalogService, CatalogService>();
 builder.Services.AddSingleton<IWishlistService, WishlistService>();
 builder.Services.AddSingleton<IFavoriteBrandsService, FavoriteBrandsService>();
 builder.Services.AddSingleton<IPriceAlertService, PriceAlertService>();
+builder.Services.AddSingleton<ISeasonalAnalysisService, SeasonalAnalysisService>();
 
 // ── Authentication ────────────────────────────────────────────────────────────
 builder.Services

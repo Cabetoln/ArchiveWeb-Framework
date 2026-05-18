@@ -209,6 +209,14 @@ def main():
     print(f"  Atualizados    : {updated}")
     print(f"  Sem alteracao  : {unchanged}")
 
+    if cookie:
+        print("\n4. Processando análise sazonal...")
+        try:
+            api_request("/api/seasonal-analysis/process", "POST", {}, cookie)
+            print("  Análise sazonal processada com sucesso.")
+        except Exception as e:
+            print(f"  Falha ao processar análise sazonal: {e}")
+
 
 if __name__ == "__main__":
     main()

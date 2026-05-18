@@ -46,6 +46,8 @@ export const items = {
 
   getById: (id: string) => request(`/api/items/${id}`),
 
+  getSeasonalInsight: (id: string) => request<import('../types').SeasonalInsightResponse>(`/api/items/${id}/seasonal-insight`),
+
   getPriceHistory: (id: string, from?: string, to?: string) => {
     const qs = new URLSearchParams()
     if (from) qs.set('from', from)

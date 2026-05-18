@@ -44,6 +44,7 @@ public class JsonItemRepository : IItemRepository
             var data = await ReadDataAsync();
             data.FashionItems.Add(item);
             data.PriceHistories.Add(initialPrice);
+            data.SeasonalAnalysisPending = true;
             await SaveDataAsync(data);
         });
 
@@ -66,9 +67,25 @@ public class JsonItemRepository : IItemRepository
             item.CurrentPrice = price;
             item.Currency = currency;
             item.UpdatedAt = DateTime.UtcNow;
+            data.SeasonalAnalysisPending = true;
 
             await SaveDataAsync(data);
             return entry;
+        });
+
+    public async Task SetSeasonalAnalysisPendingAsync(bool pending) =>
+        await WithLockAsync(async () =>
+        {
+            var data = await ReadDataAsync();
+            data.SeasonalAnalysisPending = pending;
+            await SaveDataAsync(data);
+        });
+
+    public async Task<bool> GetSeasonalAnalysisPendingAsync() =>
+        await WithLockAsync(async () =>
+        {
+            var data = await ReadDataAsync();
+            return data.SeasonalAnalysisPending;
         });
 
     // ── helpers ──────────────────────────────────────────────────────────────
@@ -105,5 +122,6 @@ public class JsonItemRepository : IItemRepository
     {
         public List<FashionItem> FashionItems { get; set; } = [];
         public List<PriceHistory> PriceHistories { get; set; } = [];
+        public bool SeasonalAnalysisPending { get; set; } = false;
     }
 }

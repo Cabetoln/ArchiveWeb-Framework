@@ -54,3 +54,35 @@ export interface PriceAlertResponse {
   currency: string
   createdAt: string
 }
+
+export interface BestDiscountMonthResponse {
+  month: number
+  monthName: string
+  season: string
+  discountPercentage: number
+  isDiscountPeriod: boolean
+  insight: string
+}
+
+export interface SeasonalPatternResponse {
+  month: number
+  monthName: string
+  season: string
+  averagePrice: number | null
+  discountPercentage: number | null
+  isDiscountPeriod: boolean
+  hasData: boolean
+}
+
+export interface SeasonalInsightResponse {
+  itemId: string
+  hasEnoughHistory: boolean
+  hasSimulatedHistory: boolean
+  currentPrice: number
+  currentMonthAverage: number
+  differencePercentage: number
+  status: string
+  recommendation: string
+  bestDiscountMonth: BestDiscountMonthResponse | null
+  monthlyPatterns: SeasonalPatternResponse[]
+}
