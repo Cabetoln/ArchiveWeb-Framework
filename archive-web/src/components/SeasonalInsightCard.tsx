@@ -46,7 +46,7 @@ export default function SeasonalInsightCard({ insight }: SeasonalInsightCardProp
                   : 'text-muted'
               }`}
             >
-              {insight.differencePercentage < 0 ? '• ' : insight.differencePercentage > 0 ? '• ' : '• '}
+              {insight.differencePercentage < 0 ? '↓ ' : insight.differencePercentage > 0 ? '↑ +' : '• '}
               {insight.differencePercentage.toFixed(2)}% em relação à média
             </p>
           </div>
