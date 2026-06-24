@@ -13,7 +13,7 @@ import { useAuth } from './AuthContext'
 
 export interface PriceNotification {
   id: string
-  fashionItemId: string
+  productId: string
   itemName: string
   brand: string
   oldPrice: number
@@ -48,7 +48,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   })
 
-  // Poll wishlist every 30s
   const { data: wishlistData } = useQuery<WishlistEntryResponse[]>({
     queryKey: ['wishlist'],
     queryFn: () => wishlist.getAll() as Promise<WishlistEntryResponse[]>,
@@ -57,7 +56,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     refetchIntervalInBackground: false,
   })
 
-  // Poll price alerts every 30s
   const { data: alertsData } = useQuery<PriceAlertResponse[]>({
     queryKey: ['price-alerts'],
     queryFn: () => priceAlerts.getAll(),
@@ -77,17 +75,17 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const updatedPrices = { ...lastPrices }
 
     for (const entry of wishlistData) {
-      const last = lastPrices[entry.fashionItemId]
+      const last = lastPrices[entry.productId]
 
       if (last === undefined) {
-        updatedPrices[entry.fashionItemId] = entry.currentPrice
+        updatedPrices[entry.productId] = entry.currentPrice
         continue
       }
 
       if (last !== entry.currentPrice) {
         newNotifs.push({
-          id: `change-${entry.fashionItemId}-${Date.now()}`,
-          fashionItemId: entry.fashionItemId,
+          id: `change-${entry.productId}-${Date.now()}`,
+          productId: entry.productId,
           itemName: entry.itemName,
           brand: entry.brand,
           oldPrice: last,
@@ -97,7 +95,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
           read: false,
           type: 'change',
         })
-        updatedPrices[entry.fashionItemId] = entry.currentPrice
+        updatedPrices[entry.productId] = entry.currentPrice
       }
     }
 
@@ -126,7 +124,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       if (alert.currentPrice <= alert.targetPrice && !alreadyTriggered.includes(alert.id)) {
         newNotifs.push({
           id: `alert-${alert.id}`,
-          fashionItemId: alert.fashionItemId,
+          productId: alert.productId,
           itemName: alert.itemName,
           brand: alert.brand,
           oldPrice: alert.targetPrice,

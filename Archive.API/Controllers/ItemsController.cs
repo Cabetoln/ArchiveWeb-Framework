@@ -1,3 +1,4 @@
+using Archive.API.Core.Contracts;
 using Archive.API.DTOs;
 using Archive.API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,46 +9,72 @@ namespace Archive.API.Controllers;
 [ApiController]
 [Route("api/items")]
 [Produces("application/json")]
-public class ItemsController(ICatalogService catalogService, ISeasonalAnalysisService seasonalAnalysisService) : ControllerBase
+public class ItemsController(
+    ICatalogService catalogService,
+    ISeasonalAnalysisService seasonalAnalysisService,
+    IProductSchema schema) : ControllerBase
 {
-    /// <summary>Busca itens de moda com filtros opcionais.</summary>
+    private static readonly HashSet<string> CoreQueryKeys =
+        new(StringComparer.OrdinalIgnoreCase) { "query", "minprice", "maxprice", "page", "pagesize" };
+
+    /// <summary>Busca produtos com filtros genéricos. Parâmetros de atributo do domínio
+    /// (ex: brand=Nike&amp;category=Tênis) são coletados automaticamente.</summary>
     [HttpGet]
-    [ProducesResponseType(typeof(PagedResult<FashionItemResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Search([FromQuery] SearchItemsRequest req)
+    [ProducesResponseType(typeof(PagedResult<ProductResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Search([FromQuery] SearchProductsRequest req)
     {
-        var result = await catalogService.SearchAsync(req);
+        var attrs = Request.Query
+            .Where(kv => !CoreQueryKeys.Contains(kv.Key) && kv.Value.Count > 0)
+            .ToDictionary(kv => kv.Key.ToLower(), kv => kv.Value.ToString());
+
+        var result = await catalogService.SearchAsync(req with { Attributes = attrs });
         return Ok(result);
     }
 
-    /// <summary>Busca um item específico pelo ID.</summary>
+    /// <summary>Retorna o schema do domínio ativo (campos disponíveis para filtro).</summary>
+    [HttpGet("schema")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public IActionResult GetSchema() =>
+        Ok(new
+        {
+            schema.DomainName,
+            schema.Attributes,
+            FavoritableGrouping = schema.FavoritableGrouping is null ? null : new
+            {
+                schema.FavoritableGrouping.Key,
+                schema.FavoritableGrouping.DisplayName,
+            }
+        });
+
+    /// <summary>Busca um produto específico pelo ID.</summary>
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(FashionItemResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var item = await catalogService.GetByIdAsync(id);
         if (item is null) return NotFound();
 
-        return Ok(new FashionItemResponse(
-            item.Id, item.Name, item.Brand, item.Category,
-            item.ImageUrl, item.ProductUrl, item.CurrentPrice, item.Currency, item.UpdatedAt));
+        return Ok(new ProductResponse(
+            item.Id, item.Name, item.ImageUrl, item.ProductUrl,
+            item.CurrentPrice, item.Currency, item.UpdatedAt, item.Attributes));
     }
 
-    /// <summary>Cadastra um novo item de moda.</summary>
+    /// <summary>Cadastra um novo produto.</summary>
     [HttpPost]
     [Authorize]
-    [ProducesResponseType(typeof(FashionItemResponse), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create([FromBody] CreateFashionItemRequest req)
+    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status201Created)]
+    public async Task<IActionResult> Create([FromBody] CreateProductRequest req)
     {
         var item = await catalogService.CreateAsync(req);
 
         return CreatedAtAction(nameof(GetById), new { id = item.Id },
-            new FashionItemResponse(
-                item.Id, item.Name, item.Brand, item.Category,
-                item.ImageUrl, item.ProductUrl, item.CurrentPrice, item.Currency, item.UpdatedAt));
+            new ProductResponse(
+                item.Id, item.Name, item.ImageUrl, item.ProductUrl,
+                item.CurrentPrice, item.Currency, item.UpdatedAt, item.Attributes));
     }
 
-    /// <summary>Retorna o histórico de preços de um item.</summary>
+    /// <summary>Retorna o histórico de preços de um produto.</summary>
     [HttpGet("{id:guid}/price-history")]
     [ProducesResponseType(typeof(IEnumerable<PriceHistoryResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -69,7 +96,7 @@ public class ItemsController(ICatalogService catalogService, ISeasonalAnalysisSe
         return insight is null ? NotFound() : Ok(insight);
     }
 
-    /// <summary>Adiciona um novo registro de preço para um item.</summary>
+    /// <summary>Adiciona um novo registro de preço para um produto.</summary>
     [HttpPost("{id:guid}/price-history")]
     [Authorize]
     [ProducesResponseType(typeof(PriceHistoryResponse), StatusCodes.Status201Created)]

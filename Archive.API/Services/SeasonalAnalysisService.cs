@@ -6,39 +6,36 @@ namespace Archive.API.Services;
 
 public class SeasonalAnalysisService : ISeasonalAnalysisService
 {
-    private static readonly string[] MonthNames = new[] {
+    private static readonly string[] MonthNames =
+    [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    };
+    ];
 
     private readonly IItemRepository _items;
 
-    public SeasonalAnalysisService(IItemRepository items)
+    public SeasonalAnalysisService(IItemRepository items) => _items = items;
+
+    public Task<SeasonalAnalysisStatusResponse> GetPendingStatusAsync() => GetStatusAsync();
+
+    public async Task<SeasonalInsightResponse?> GetInsightAsync(Guid productId)
     {
-        _items = items;
-    }
+        var product = await _items.GetByIdAsync(productId);
+        if (product is null) return null;
 
-    public Task<SeasonalAnalysisStatusResponse> GetPendingStatusAsync() =>
-        GetStatusAsync();
-
-    public async Task<SeasonalInsightResponse?> GetInsightAsync(Guid itemId)
-    {
-        var item = await _items.GetByIdAsync(itemId);
-        if (item is null) return null;
-
-        var history = (await _items.GetPriceHistoryAsync(itemId))
+        var history = (await _items.GetPriceHistoryAsync(productId))
             .OrderBy(p => p.RecordedAt)
             .ToList();
 
         if (history.Count <= 3)
         {
-            if (!ShouldSimulateHistory(item.Id))
+            if (!ShouldSimulateHistory(product.Id))
             {
                 return new SeasonalInsightResponse(
-                    item.Id,
+                    product.Id,
                     HasEnoughHistory: false,
                     HasSimulatedHistory: false,
-                    CurrentPrice: item.CurrentPrice,
+                    CurrentPrice: product.CurrentPrice,
                     CurrentMonthAverage: 0m,
                     DifferencePercentage: 0m,
                     Status: "Sem dados suficientes",
@@ -47,20 +44,18 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
                     MonthlyPatterns: Array.Empty<SeasonalPatternResponse>());
             }
 
-            history = CreateSyntheticHistory(item);
-            return BuildInsight(item, history, hasEnoughHistory: false, isSimulated: true);
+            history = CreateSyntheticHistory(product);
+            return BuildInsight(product, history, hasEnoughHistory: false, isSimulated: true);
         }
 
-        return BuildInsight(item, history, hasEnoughHistory: true, isSimulated: false);
+        return BuildInsight(product, history, hasEnoughHistory: true, isSimulated: false);
     }
 
     public async Task<SeasonalAnalysisStatusResponse> ProcessPendingAnalysisAsync()
     {
         var pending = await _items.GetSeasonalAnalysisPendingAsync();
         if (pending)
-        {
             await _items.SetSeasonalAnalysisPendingAsync(false);
-        }
 
         return new SeasonalAnalysisStatusResponse(false);
     }
@@ -71,7 +66,7 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
         return new SeasonalAnalysisStatusResponse(pending);
     }
 
-    private static SeasonalInsightResponse BuildInsight(FashionItem item, List<PriceHistory> history, bool hasEnoughHistory, bool isSimulated)
+    private static SeasonalInsightResponse BuildInsight(Product product, List<PriceHistory> history, bool hasEnoughHistory, bool isSimulated)
     {
         var overallAverage = history.Average(p => p.Price);
         var patterns = BuildMonthlyPatterns(history, overallAverage);
@@ -80,7 +75,7 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
         var currentMonthAverage = currentPattern?.AveragePrice ?? overallAverage;
 
         var differencePercentage = currentMonthAverage > 0
-            ? Math.Round((item.CurrentPrice - currentMonthAverage) / currentMonthAverage * 100m, 2)
+            ? Math.Round((product.CurrentPrice - currentMonthAverage) / currentMonthAverage * 100m, 2)
             : 0m;
 
         var status = GetStatus(differencePercentage);
@@ -88,10 +83,10 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
         var bestDiscountMonth = BuildBestDiscountMonth(patterns, overallAverage);
 
         return new SeasonalInsightResponse(
-            item.Id,
+            product.Id,
             HasEnoughHistory: hasEnoughHistory,
             HasSimulatedHistory: isSimulated,
-            CurrentPrice: item.CurrentPrice,
+            CurrentPrice: product.CurrentPrice,
             CurrentMonthAverage: Math.Round(currentMonthAverage, 2),
             DifferencePercentage: differencePercentage,
             Status: status,
@@ -109,27 +104,20 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
 
     private static string GetRecommendation(string status, bool isSimulated)
     {
-        var baseRecommendation = status switch
+        var base_ = status switch
         {
             "Em baixa" => "Bom momento para considerar a compra.",
-            "Em alta" => "Aguarde uma janela mais favorável.",
-            _ => "Acompanhe a evolução de preço.",
+            "Em alta"  => "Aguarde uma janela mais favorável.",
+            _          => "Acompanhe a evolução de preço.",
         };
 
-        return isSimulated
-            ? baseRecommendation + " (baseado em dados simulados de demonstração)."
-            : baseRecommendation;
+        return isSimulated ? base_ + " (baseado em dados simulados de demonstração)." : base_;
     }
 
     private static BestDiscountMonthResponse? BuildBestDiscountMonth(IReadOnlyList<SeasonalPatternResponse> patterns, decimal overallAverage)
     {
-        var best = patterns
-            .Where(p => p.HasData)
-            .OrderBy(p => p.AveragePrice)
-            .FirstOrDefault();
-
-        if (best is null || best.AveragePrice is null)
-            return null;
+        var best = patterns.Where(p => p.HasData).OrderBy(p => p.AveragePrice).FirstOrDefault();
+        if (best is null || best.AveragePrice is null) return null;
 
         var discountPercentage = overallAverage > 0
             ? Math.Round((best.AveragePrice.Value - overallAverage) / overallAverage * 100m, 2)
@@ -151,11 +139,7 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
     {
         var grouped = history
             .GroupBy(p => p.RecordedAt.Month)
-            .ToDictionary(g => g.Key, g => new
-            {
-                Average = g.Average(p => p.Price),
-                Count = g.Count()
-            });
+            .ToDictionary(g => g.Key, g => new { Average = g.Average(p => p.Price), Count = g.Count() });
 
         var patterns = new List<SeasonalPatternResponse>(12);
 
@@ -169,50 +153,42 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
                     : 0m;
 
                 patterns.Add(new SeasonalPatternResponse(
-                    Month: month,
-                    MonthName: MonthNames[month - 1],
-                    Season: GetSeason(month),
-                    AveragePrice: average,
-                    DiscountPercentage: discount,
-                    IsDiscountPeriod: discount <= -5m,
-                    HasData: true));
+                    Month: month, MonthName: MonthNames[month - 1], Season: GetSeason(month),
+                    AveragePrice: average, DiscountPercentage: discount,
+                    IsDiscountPeriod: discount <= -5m, HasData: true));
             }
             else
             {
                 patterns.Add(new SeasonalPatternResponse(
-                    Month: month,
-                    MonthName: MonthNames[month - 1],
-                    Season: GetSeason(month),
-                    AveragePrice: null,
-                    DiscountPercentage: null,
-                    IsDiscountPeriod: false,
-                    HasData: false));
+                    Month: month, MonthName: MonthNames[month - 1], Season: GetSeason(month),
+                    AveragePrice: null, DiscountPercentage: null,
+                    IsDiscountPeriod: false, HasData: false));
             }
         }
 
         return patterns;
     }
 
-    private static List<PriceHistory> CreateSyntheticHistory(FashionItem item)
+    private static List<PriceHistory> CreateSyntheticHistory(Product product)
     {
-        var step = Math.Max(1m, Math.Round(item.CurrentPrice * 0.1m, 2));
+        var step = Math.Max(1m, Math.Round(product.CurrentPrice * 0.1m, 2));
         var now = DateTime.UtcNow;
 
         return Enumerable.Range(1, 4)
             .Select(offset => new PriceHistory
             {
-                FashionItemId = item.Id,
-                Price = Math.Max(1m, item.CurrentPrice - step * offset),
-                Currency = item.Currency,
+                ProductId  = product.Id,
+                Price      = Math.Max(1m, product.CurrentPrice - step * offset),
+                Currency   = product.Currency,
                 RecordedAt = now.AddMonths(-offset),
-                Source = "synthetic"
+                Source     = "synthetic"
             })
             .ToList();
     }
 
-    private static bool ShouldSimulateHistory(Guid itemId)
+    private static bool ShouldSimulateHistory(Guid productId)
     {
-        var bytes = itemId.ToByteArray();
+        var bytes = productId.ToByteArray();
         var seed = bytes.Aggregate(0, (current, value) => current + value);
         return seed % 2 == 0;
     }
@@ -220,8 +196,8 @@ public class SeasonalAnalysisService : ISeasonalAnalysisService
     private static string GetSeason(int month) => month switch
     {
         12 or 1 or 2 => "Verão",
-        3 or 4 or 5 => "Outono",
-        6 or 7 or 8 => "Inverno",
+        3 or 4 or 5  => "Outono",
+        6 or 7 or 8  => "Inverno",
         9 or 10 or 11 => "Primavera",
         _ => "Desconhecido",
     };

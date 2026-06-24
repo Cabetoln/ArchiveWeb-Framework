@@ -12,7 +12,7 @@ function NotifItem({ n }: { n: PriceNotification }) {
 
   return (
     <Link
-      to={`/items/${n.fashionItemId}`}
+      to={`/items/${n.productId}`}
       className="block px-4 py-3 border-b border-border hover:bg-s2 transition-colors"
     >
       <div className="flex items-start justify-between gap-3">

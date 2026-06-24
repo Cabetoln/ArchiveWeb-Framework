@@ -1,11 +1,10 @@
 namespace Archive.API.DTOs;
 
-public record CreateFashionItemRequest(
+public record CreateProductRequest(
     string Name,
-    string Brand,
-    string? Category,
-    string? ImageUrl,
-    string? ProductUrl,
     decimal CurrentPrice,
-    string Currency = "BRL"
+    string? ImageUrl = null,
+    string? ProductUrl = null,
+    string Currency = "BRL",
+    Dictionary<string, string?>? Attributes = null
 );

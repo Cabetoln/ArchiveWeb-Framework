@@ -1,4 +1,6 @@
+using Archive.API.Core.Contracts;
 using Archive.API.Exceptions;
+using Archive.API.Fashion;
 using Archive.API.Repositories;
 using Archive.API.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -20,6 +22,7 @@ builder.Services.AddSingleton<IWishlistService, WishlistService>();
 builder.Services.AddSingleton<IFavoriteBrandsService, FavoriteBrandsService>();
 builder.Services.AddSingleton<IPriceAlertService, PriceAlertService>();
 builder.Services.AddSingleton<ISeasonalAnalysisService, SeasonalAnalysisService>();
+builder.Services.AddSingleton<IProductSchema, FashionProductSchema>();
 
 // ── Authentication ────────────────────────────────────────────────────────────
 builder.Services

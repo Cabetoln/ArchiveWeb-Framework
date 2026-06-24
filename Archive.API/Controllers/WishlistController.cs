@@ -29,7 +29,7 @@ public class WishlistController(IWishlistService wishlistService) : ControllerBa
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Add([FromBody] AddToWishlistRequest req)
     {
-        var entry = await wishlistService.AddAsync(UserId, req.FashionItemId, req.Note);
+        var entry = await wishlistService.AddAsync(UserId, req.ProductId, req.Note);
         return CreatedAtAction(nameof(GetAll), entry);
     }
 

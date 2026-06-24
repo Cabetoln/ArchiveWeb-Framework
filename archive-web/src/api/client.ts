@@ -46,7 +46,8 @@ export const items = {
 
   getById: (id: string) => request(`/api/items/${id}`),
 
-  getSeasonalInsight: (id: string) => request<import('../types').SeasonalInsightResponse>(`/api/items/${id}/seasonal-insight`),
+  getSeasonalInsight: (id: string) =>
+    request<import('../types').SeasonalInsightResponse>(`/api/items/${id}/seasonal-insight`),
 
   getPriceHistory: (id: string, from?: string, to?: string) => {
     const qs = new URLSearchParams()
@@ -54,6 +55,8 @@ export const items = {
     if (to) qs.set('to', to)
     return request(`/api/items/${id}/price-history?${qs}`)
   },
+
+  getSchema: () => request('/api/items/schema'),
 }
 
 export const favoriteBrands = {
@@ -69,10 +72,10 @@ export const favoriteBrands = {
 export const priceAlerts = {
   getAll: () => request<import('../types').PriceAlertResponse[]>('/api/price-alerts'),
 
-  set: (fashionItemId: string, targetPrice: number) =>
+  set: (productId: string, targetPrice: number) =>
     request('/api/price-alerts', {
       method: 'POST',
-      body: JSON.stringify({ fashionItemId, targetPrice }),
+      body: JSON.stringify({ productId, targetPrice }),
     }),
 
   remove: (id: string) =>
@@ -82,10 +85,10 @@ export const priceAlerts = {
 export const wishlist = {
   getAll: () => request('/api/wishlist'),
 
-  add: (fashionItemId: string, note?: string) =>
+  add: (productId: string, note?: string) =>
     request('/api/wishlist', {
       method: 'POST',
-      body: JSON.stringify({ fashionItemId, note }),
+      body: JSON.stringify({ productId, note }),
     }),
 
   remove: (entryId: string) =>

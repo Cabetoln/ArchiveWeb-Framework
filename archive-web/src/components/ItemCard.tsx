@@ -1,17 +1,20 @@
 import { Link } from 'react-router-dom'
-import type { FashionItemResponse } from '../types'
+import type { ProductResponse } from '../types'
 import { useAuth } from '../context/AuthContext'
 
 interface Props {
-  item: FashionItemResponse
+  item: ProductResponse
   inWishlist?: boolean
-  onToggleWishlist?: (item: FashionItemResponse) => void
+  onToggleWishlist?: (item: ProductResponse) => void
   isBrandFavorite?: boolean
   onToggleBrandFavorite?: (brand: string) => void
 }
 
 export default function ItemCard({ item, inWishlist, onToggleWishlist, isBrandFavorite, onToggleBrandFavorite }: Props) {
   const { user } = useAuth()
+
+  const brand = item.attributes?.brand ?? ''
+  const category = item.attributes?.category
 
   const price = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -37,12 +40,12 @@ export default function ItemCard({ item, inWishlist, onToggleWishlist, isBrandFa
 
         <div className="p-4">
           <div className="flex items-center gap-1 mb-1">
-            <p className="text-xs tracking-widest text-muted uppercase">{item.brand}</p>
-            {user && onToggleBrandFavorite && (
+            <p className="text-xs tracking-widest text-muted uppercase">{brand}</p>
+            {user && onToggleBrandFavorite && brand && (
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  onToggleBrandFavorite(item.brand)
+                  onToggleBrandFavorite(brand)
                 }}
                 className={`text-xs leading-none transition-all ${
                   isBrandFavorite
@@ -57,8 +60,8 @@ export default function ItemCard({ item, inWishlist, onToggleWishlist, isBrandFa
           </div>
           <p className="text-sm text-cream leading-snug mb-3 line-clamp-2">{item.name}</p>
           <p className="font-display text-lg tracking-wider text-cream">{price}</p>
-          {item.category && (
-            <p className="text-xs text-muted mt-1 uppercase tracking-wider">{item.category}</p>
+          {category && (
+            <p className="text-xs text-muted mt-1 uppercase tracking-wider">{category}</p>
           )}
         </div>
       </Link>

@@ -61,7 +61,7 @@ export default function WishlistPage() {
                 key={entry.id}
                 className="flex items-center gap-6 py-5 border-b border-border hover:bg-surface/40 transition-colors px-2 -mx-2"
               >
-                <Link to={`/items/${entry.fashionItemId}`} className="shrink-0">
+                <Link to={`/items/${entry.productId}`} className="shrink-0">
                   <div className="w-14 h-18 w-14 bg-s2 overflow-hidden" style={{ height: '4.5rem' }}>
                     {entry.imageUrl ? (
                       <img
@@ -80,7 +80,7 @@ export default function WishlistPage() {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs tracking-widest text-muted uppercase mb-1">{entry.brand}</p>
                   <Link
-                    to={`/items/${entry.fashionItemId}`}
+                    to={`/items/${entry.productId}`}
                     className="text-sm text-cream truncate block hover:text-cream/70 transition-colors"
                   >
                     {entry.itemName}

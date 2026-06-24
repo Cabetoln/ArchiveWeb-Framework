@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { items, wishlist, favoriteBrands } from '../api/client'
-import type { FashionItemResponse, PagedResult, WishlistEntryResponse } from '../types'
+import type { ProductResponse, PagedResult, WishlistEntryResponse } from '../types'
 import ItemCard from '../components/ItemCard'
 import { useAuth } from '../context/AuthContext'
 
@@ -26,7 +26,7 @@ export default function HomePage() {
     setPage(1)
   }, [searchParams])
 
-  const [imageResults, setImageResults] = useState<FashionItemResponse[] | null>(null)
+  const [imageResults, setImageResults] = useState<ProductResponse[] | null>(null)
   const [imageLoading, setImageLoading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -38,9 +38,9 @@ export default function HomePage() {
     pageSize: 20,
   }
 
-  const { data, isLoading } = useQuery<PagedResult<FashionItemResponse>>({
+  const { data, isLoading } = useQuery<PagedResult<ProductResponse>>({
     queryKey: ['items', params],
-    queryFn: () => items.search(params) as Promise<PagedResult<FashionItemResponse>>,
+    queryFn: () => items.search(params) as Promise<PagedResult<ProductResponse>>,
   })
 
   const { data: wishlistData } = useQuery<WishlistEntryResponse[]>({
@@ -55,7 +55,7 @@ export default function HomePage() {
     enabled: !!user,
   })
 
-  const favBrandsSet = new Set((favBrandsData ?? []).map((b) => b.toLowerCase()))
+  const favBrandsSet = new Set((favBrandsData ?? []).map((b: string) => b.toLowerCase()))
 
   const addBrandMutation = useMutation({
     mutationFn: (brand: string) => favoriteBrands.add(brand),
@@ -78,9 +78,9 @@ export default function HomePage() {
     [favBrandsSet, addBrandMutation, removeBrandMutation],
   )
 
-  const wishlistIds = new Set(wishlistData?.map((w) => w.fashionItemId) ?? [])
+  const wishlistIds = new Set(wishlistData?.map((w) => w.productId) ?? [])
   const wishlistEntryMap = Object.fromEntries(
-    wishlistData?.map((w) => [w.fashionItemId, w.id]) ?? [],
+    wishlistData?.map((w) => [w.productId, w.id]) ?? [],
   )
 
   const addMutation = useMutation({
@@ -94,7 +94,7 @@ export default function HomePage() {
   })
 
   const handleToggleWishlist = useCallback(
-    (item: FashionItemResponse) => {
+    (item: ProductResponse) => {
       if (wishlistIds.has(item.id)) {
         removeMutation.mutate(wishlistEntryMap[item.id])
       } else {
@@ -233,7 +233,7 @@ export default function HomePage() {
                 item={item}
                 inWishlist={wishlistIds.has(item.id)}
                 onToggleWishlist={user ? handleToggleWishlist : undefined}
-                isBrandFavorite={favBrandsSet.has(item.brand?.toLowerCase())}
+                isBrandFavorite={favBrandsSet.has((item.attributes?.brand ?? '').toLowerCase())}
                 onToggleBrandFavorite={user ? handleToggleBrand : undefined}
               />
             ))}
@@ -266,7 +266,7 @@ export default function HomePage() {
                 item={item}
                 inWishlist={wishlistIds.has(item.id)}
                 onToggleWishlist={user ? handleToggleWishlist : undefined}
-                isBrandFavorite={favBrandsSet.has(item.brand?.toLowerCase())}
+                isBrandFavorite={favBrandsSet.has((item.attributes?.brand ?? '').toLowerCase())}
                 onToggleBrandFavorite={user ? handleToggleBrand : undefined}
               />
             ))}

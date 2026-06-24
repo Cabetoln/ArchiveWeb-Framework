@@ -1,13 +1,12 @@
 namespace Archive.API.DTOs;
 
-public record FashionItemResponse(
+public record ProductResponse(
     Guid Id,
     string Name,
-    string Brand,
-    string? Category,
     string? ImageUrl,
     string? ProductUrl,
     decimal CurrentPrice,
     string Currency,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    Dictionary<string, string?> Attributes
 );

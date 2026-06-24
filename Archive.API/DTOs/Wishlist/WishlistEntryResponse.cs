@@ -2,7 +2,7 @@ namespace Archive.API.DTOs;
 
 public record WishlistEntryResponse(
     Guid Id,
-    Guid FashionItemId,
+    Guid ProductId,
     string ItemName,
     string Brand,
     decimal CurrentPrice,

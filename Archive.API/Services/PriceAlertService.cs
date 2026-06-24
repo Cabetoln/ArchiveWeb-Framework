@@ -16,17 +16,18 @@ public class PriceAlertService(IUserRepository users, IItemRepository items) : I
 
         return user.PriceAlerts
             .Join(allItems,
-                a => a.FashionItemId,
+                a => a.ProductId,
                 i => i.Id,
                 (a, i) => new PriceAlertResponse(
-                    a.Id, i.Id, i.Name, i.Brand,
+                    a.Id, i.Id, i.Name,
+                    i.Attributes.GetValueOrDefault("brand") ?? string.Empty,
                     a.TargetPrice, i.CurrentPrice, i.Currency, a.CreatedAt))
             .ToList();
     }
 
-    public async Task<PriceAlertResponse> SetAsync(Guid userId, Guid fashionItemId, decimal targetPrice)
+    public async Task<PriceAlertResponse> SetAsync(Guid userId, Guid productId, decimal targetPrice)
     {
-        var item = await items.GetByIdAsync(fashionItemId);
+        var item = await items.GetByIdAsync(productId);
         if (item is null)
             throw new BusinessException("Item não encontrado.", StatusCodes.Status404NotFound);
 
@@ -34,27 +35,22 @@ public class PriceAlertService(IUserRepository users, IItemRepository items) : I
         if (user is null)
             throw new BusinessException("Usuário não encontrado.", StatusCodes.Status404NotFound);
 
-        // Se já existe alerta para esse item, atualiza o preço-alvo
-        var existing = user.PriceAlerts.FirstOrDefault(a => a.FashionItemId == fashionItemId);
+        var existing = user.PriceAlerts.FirstOrDefault(a => a.ProductId == productId);
         if (existing is not null)
         {
             existing.TargetPrice = targetPrice;
         }
         else
         {
-            existing = new PriceAlert
-            {
-                UserId = userId,
-                FashionItemId = fashionItemId,
-                TargetPrice = targetPrice
-            };
+            existing = new PriceAlert { UserId = userId, ProductId = productId, TargetPrice = targetPrice };
             user.PriceAlerts.Add(existing);
         }
 
         await users.UpdateAsync(user);
 
         return new PriceAlertResponse(
-            existing.Id, item.Id, item.Name, item.Brand,
+            existing.Id, item.Id, item.Name,
+            item.Attributes.GetValueOrDefault("brand") ?? string.Empty,
             existing.TargetPrice, item.CurrentPrice, item.Currency, existing.CreatedAt);
     }
 

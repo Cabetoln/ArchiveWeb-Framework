@@ -17,56 +17,56 @@ public class JsonItemRepository : IItemRepository
         _filePath = Path.Combine(dataDir, "catalog.json");
     }
 
-    public async Task<List<FashionItem>> GetAllAsync() =>
+    public async Task<List<Product>> GetAllAsync() =>
         await WithLockAsync(async () =>
         {
             var data = await ReadDataAsync();
-            return data.FashionItems;
+            return data.Products;
         });
 
-    public async Task<FashionItem?> GetByIdAsync(Guid id) =>
+    public async Task<Product?> GetByIdAsync(Guid id) =>
         await WithLockAsync(async () =>
         {
             var data = await ReadDataAsync();
-            return data.FashionItems.FirstOrDefault(x => x.Id == id);
+            return data.Products.FirstOrDefault(x => x.Id == id);
         });
 
-    public async Task<List<PriceHistory>> GetPriceHistoryAsync(Guid itemId) =>
+    public async Task<List<PriceHistory>> GetPriceHistoryAsync(Guid productId) =>
         await WithLockAsync(async () =>
         {
             var data = await ReadDataAsync();
-            return data.PriceHistories.Where(x => x.FashionItemId == itemId).ToList();
+            return data.PriceHistories.Where(x => x.ProductId == productId).ToList();
         });
 
-    public async Task AddAsync(FashionItem item, PriceHistory initialPrice) =>
+    public async Task AddAsync(Product product, PriceHistory initialPrice) =>
         await WithLockAsync(async () =>
         {
             var data = await ReadDataAsync();
-            data.FashionItems.Add(item);
+            data.Products.Add(product);
             data.PriceHistories.Add(initialPrice);
             data.SeasonalAnalysisPending = true;
             await SaveDataAsync(data);
         });
 
-    public async Task<PriceHistory?> RecordPriceAsync(Guid itemId, decimal price, string currency, string? source) =>
+    public async Task<PriceHistory?> RecordPriceAsync(Guid productId, decimal price, string currency, string? source) =>
         await WithLockAsync(async () =>
         {
             var data = await ReadDataAsync();
-            var item = data.FashionItems.FirstOrDefault(x => x.Id == itemId);
-            if (item is null) return null;
+            var product = data.Products.FirstOrDefault(x => x.Id == productId);
+            if (product is null) return null;
 
             var entry = new PriceHistory
             {
-                FashionItemId = itemId,
+                ProductId = productId,
                 Price = price,
                 Currency = currency,
                 Source = source
             };
 
             data.PriceHistories.Add(entry);
-            item.CurrentPrice = price;
-            item.Currency = currency;
-            item.UpdatedAt = DateTime.UtcNow;
+            product.CurrentPrice = price;
+            product.Currency = currency;
+            product.UpdatedAt = DateTime.UtcNow;
             data.SeasonalAnalysisPending = true;
 
             await SaveDataAsync(data);
@@ -120,7 +120,7 @@ public class JsonItemRepository : IItemRepository
 
     private class CatalogData
     {
-        public List<FashionItem> FashionItems { get; set; } = [];
+        public List<Product> Products { get; set; } = [];
         public List<PriceHistory> PriceHistories { get; set; } = [];
         public bool SeasonalAnalysisPending { get; set; } = false;
     }

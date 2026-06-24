@@ -5,16 +5,15 @@ export interface UserResponse {
   createdAt: string
 }
 
-export interface FashionItemResponse {
+export interface ProductResponse {
   id: string
   name: string
-  brand: string
-  category: string | null
   imageUrl: string | null
   productUrl: string | null
   currentPrice: number
   currency: string
   updatedAt: string
+  attributes: Record<string, string | null>
 }
 
 export interface PagedResult<T> {
@@ -27,7 +26,7 @@ export interface PagedResult<T> {
 
 export interface WishlistEntryResponse {
   id: string
-  fashionItemId: string
+  productId: string
   itemName: string
   brand: string
   currentPrice: number
@@ -46,7 +45,7 @@ export interface PriceHistoryResponse {
 
 export interface PriceAlertResponse {
   id: string
-  fashionItemId: string
+  productId: string
   itemName: string
   brand: string
   targetPrice: number

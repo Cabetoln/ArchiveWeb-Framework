@@ -16,17 +16,18 @@ public class WishlistService(IUserRepository users, IItemRepository items) : IWi
             .OrderByDescending(w => w.AddedAt)
             .Join(
                 allItems,
-                w => w.FashionItemId,
+                w => w.ProductId,
                 i => i.Id,
                 (w, i) => new WishlistEntryResponse(
-                    w.Id, w.FashionItemId, i.Name, i.Brand,
+                    w.Id, w.ProductId, i.Name,
+                    i.Attributes.GetValueOrDefault("brand") ?? string.Empty,
                     i.CurrentPrice, i.ImageUrl, w.AddedAt, w.Note))
             .ToList();
     }
 
-    public async Task<WishlistEntryResponse> AddAsync(Guid userId, Guid fashionItemId, string? note)
+    public async Task<WishlistEntryResponse> AddAsync(Guid userId, Guid productId, string? note)
     {
-        var item = await items.GetByIdAsync(fashionItemId);
+        var item = await items.GetByIdAsync(productId);
         if (item is null)
             throw new BusinessException("Item não encontrado.", StatusCodes.Status404NotFound);
 
@@ -34,21 +35,16 @@ public class WishlistService(IUserRepository users, IItemRepository items) : IWi
         if (user is null)
             throw new BusinessException("Usuário não encontrado.", StatusCodes.Status404NotFound);
 
-        if (user.WishlistEntries.Any(w => w.FashionItemId == fashionItemId))
+        if (user.WishlistEntries.Any(w => w.ProductId == productId))
             throw new BusinessException("Item já está na wishlist.", StatusCodes.Status409Conflict);
 
-        var entry = new WishlistEntry
-        {
-            UserId = userId,
-            FashionItemId = fashionItemId,
-            Note = note
-        };
-
+        var entry = new WishlistEntry { UserId = userId, ProductId = productId, Note = note };
         user.WishlistEntries.Add(entry);
         await users.UpdateAsync(user);
 
         return new WishlistEntryResponse(
-            entry.Id, item.Id, item.Name, item.Brand,
+            entry.Id, item.Id, item.Name,
+            item.Attributes.GetValueOrDefault("brand") ?? string.Empty,
             item.CurrentPrice, item.ImageUrl, entry.AddedAt, entry.Note);
     }
 

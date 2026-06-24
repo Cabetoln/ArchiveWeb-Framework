@@ -2,7 +2,7 @@ namespace Archive.API.DTOs;
 
 public record PriceAlertResponse(
     Guid Id,
-    Guid FashionItemId,
+    Guid ProductId,
     string ItemName,
     string Brand,
     decimal TargetPrice,

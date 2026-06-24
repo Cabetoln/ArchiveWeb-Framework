@@ -1,3 +1,3 @@
 namespace Archive.API.DTOs;
 
-public record SetPriceAlertRequest(Guid FashionItemId, decimal TargetPrice);
+public record SetPriceAlertRequest(Guid ProductId, decimal TargetPrice);

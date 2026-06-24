@@ -1,11 +1,13 @@
 namespace Archive.API.DTOs;
 
-public record SearchItemsRequest(
-    string? Query,
-    string? Brand,
-    string? Category,
-    decimal? MinPrice,
-    decimal? MaxPrice,
-    int Page = 1,
-    int PageSize = 20
-);
+public record SearchProductsRequest
+{
+    public string? Query { get; init; }
+    public decimal? MinPrice { get; init; }
+    public decimal? MaxPrice { get; init; }
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 20;
+
+    // filtros de atributo do domínio — populados pelo controller a partir da query string
+    public Dictionary<string, string> Attributes { get; init; } = [];
+}

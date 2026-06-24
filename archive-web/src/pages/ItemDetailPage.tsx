@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { items, wishlist, priceAlerts } from '../api/client'
 import type {
-  FashionItemResponse,
+  ProductResponse,
   PriceHistoryResponse,
   WishlistEntryResponse,
   PriceAlertResponse,
@@ -22,9 +22,9 @@ export default function ItemDetailPage() {
   const { user } = useAuth()
   const qc = useQueryClient()
 
-  const { data: item, isLoading } = useQuery<FashionItemResponse>({
+  const { data: item, isLoading } = useQuery<ProductResponse>({
     queryKey: ['item', id],
-    queryFn: () => items.getById(id!) as Promise<FashionItemResponse>,
+    queryFn: () => items.getById(id!) as Promise<ProductResponse>,
     enabled: !!id,
   })
 
@@ -46,7 +46,7 @@ export default function ItemDetailPage() {
     enabled: !!user,
   })
 
-  const wishlistEntry = wishlistData?.find((w) => w.fashionItemId === id)
+  const wishlistEntry = wishlistData?.find((w) => w.productId === id)
 
   const addMutation = useMutation({
     mutationFn: () => wishlist.add(id!),
@@ -67,7 +67,7 @@ export default function ItemDetailPage() {
     enabled: !!user,
   })
 
-  const currentAlert = alertsData?.find((a) => a.fashionItemId === id)
+  const currentAlert = alertsData?.find((a) => a.productId === id)
 
   const setAlertMutation = useMutation({
     mutationFn: (targetPrice: number) => priceAlerts.set(id!, targetPrice),
@@ -140,12 +140,12 @@ export default function ItemDetailPage() {
 
         {/* Info */}
         <div className="flex flex-col">
-          <p className="text-xs tracking-widest text-muted uppercase mb-3">{item.brand}</p>
+          <p className="text-xs tracking-widest text-muted uppercase mb-3">{item.attributes?.brand}</p>
           <h1 className="font-display text-4xl lg:text-5xl tracking-wide text-cream leading-tight mb-2">
             {item.name.toUpperCase()}
           </h1>
-          {item.category && (
-            <p className="text-xs tracking-widest text-muted uppercase mb-8">{item.category}</p>
+          {item.attributes?.category && (
+            <p className="text-xs tracking-widest text-muted uppercase mb-8">{item.attributes.category}</p>
           )}
 
           <div className="mb-8">

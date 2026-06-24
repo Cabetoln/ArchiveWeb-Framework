@@ -26,7 +26,7 @@ public class PriceAlertsController(IPriceAlertService service) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Set([FromBody] SetPriceAlertRequest req)
     {
-        var alert = await service.SetAsync(UserId, req.FashionItemId, req.TargetPrice);
+        var alert = await service.SetAsync(UserId, req.ProductId, req.TargetPrice);
         return Ok(alert);
     }
 
