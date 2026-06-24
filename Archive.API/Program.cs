@@ -19,7 +19,7 @@ builder.Services.AddSingleton<IItemRepository, JsonItemRepository>();
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<ICatalogService, CatalogService>();
 builder.Services.AddSingleton<IWishlistService, WishlistService>();
-builder.Services.AddSingleton<IFavoriteBrandsService, FavoriteBrandsService>();
+builder.Services.AddSingleton<IFavoriteGroupsService, FavoriteGroupsService>();
 builder.Services.AddSingleton<IPriceAlertService, PriceAlertService>();
 builder.Services.AddSingleton<ISeasonalAnalysisService, SeasonalAnalysisService>();
 builder.Services.AddSingleton<IProductSchema, FashionProductSchema>();

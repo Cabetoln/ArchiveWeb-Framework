@@ -60,13 +60,13 @@ export const items = {
 }
 
 export const favoriteBrands = {
-  getAll: () => request<string[]>('/api/favorite-brands'),
+  getAll: () => request<string[]>('/api/favorite-groups'),
 
   add: (brand: string) =>
-    request(`/api/favorite-brands/${encodeURIComponent(brand)}`, { method: 'POST' }),
+    request(`/api/favorite-groups/${encodeURIComponent(brand)}`, { method: 'POST' }),
 
   remove: (brand: string) =>
-    request(`/api/favorite-brands/${encodeURIComponent(brand)}`, { method: 'DELETE' }),
+    request(`/api/favorite-groups/${encodeURIComponent(brand)}`, { method: 'DELETE' }),
 }
 
 export const priceAlerts = {

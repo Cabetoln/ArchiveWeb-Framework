@@ -6,10 +6,10 @@ using System.Security.Claims;
 namespace Archive.API.Controllers;
 
 [ApiController]
-[Route("api/favorite-brands")]
+[Route("api/favorite-groups")]
 [Authorize]
 [Produces("application/json")]
-public class FavoriteBrandsController(IFavoriteBrandsService service) : ControllerBase
+public class FavoriteGroupsController(IFavoriteGroupsService service) : ControllerBase
 {
     private Guid UserId => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -18,23 +18,23 @@ public class FavoriteBrandsController(IFavoriteBrandsService service) : Controll
     public async Task<IActionResult> GetAll() =>
         Ok(await service.GetAsync(UserId));
 
-    [HttpPost("{brand}")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [HttpPost("{value}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> Add(string brand)
+    public async Task<IActionResult> Add(string value)
     {
-        if (!await service.AddAsync(UserId, brand))
-            return Conflict(new { error = "Marca já está nos favoritos." });
+        if (!await service.AddAsync(UserId, value))
+            return Conflict(new { error = "Já está nos favoritos." });
 
         return NoContent();
     }
 
-    [HttpDelete("{brand}")]
+    [HttpDelete("{value}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Remove(string brand)
+    public async Task<IActionResult> Remove(string value)
     {
-        if (!await service.RemoveAsync(UserId, brand))
+        if (!await service.RemoveAsync(UserId, value))
             return NotFound();
 
         return NoContent();
