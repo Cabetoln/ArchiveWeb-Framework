@@ -24,6 +24,10 @@ builder.Services.AddSingleton<IPriceAlertService, PriceAlertService>();
 builder.Services.AddSingleton<ISeasonalAnalysisService, SeasonalAnalysisService>();
 builder.Services.AddSingleton<IProductSchema, FashionProductSchema>();
 
+// ── Pontos flexíveis instanciados pela aplicação Fashion ───────────────────────
+builder.Services.AddSingleton<IPriceScraper, FarfetchPriceScraper>();
+builder.Services.AddHttpClient<IImageSearchProvider, ClipImageSearchProvider>();
+
 // ── Authentication ────────────────────────────────────────────────────────────
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

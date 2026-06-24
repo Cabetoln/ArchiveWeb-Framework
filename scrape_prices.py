@@ -43,7 +43,7 @@ def scrape_farfetch() -> list[dict]:
     seen_urls = set()
 
     for category, url in CATEGORY_URLS:
-        print(f"  Buscando {category}...", end=" ", flush=True)
+        print(f"  Buscando {category}...", end=" ", flush=True, file=sys.stderr)
         html = fetch_with_curl(url)
 
         match = re.search(
@@ -51,7 +51,7 @@ def scrape_farfetch() -> list[dict]:
             html, re.DOTALL
         )
         if not match:
-            print("sem dados (bloqueado?)")
+            print("sem dados (bloqueado?)", file=sys.stderr)
             continue
 
         data = json.loads(match.group(1))
@@ -81,7 +81,7 @@ def scrape_farfetch() -> list[dict]:
             })
             count += 1
 
-        print(f"{count} itens")
+        print(f"{count} itens", file=sys.stderr)
 
     return all_items
 
@@ -218,5 +218,19 @@ def main():
             print(f"  Falha ao processar análise sazonal: {e}")
 
 
+def scrape_only():
+    """Modo de encapsulamento: apenas raspa e emite os itens como JSON no stdout.
+
+    Usado pelo framework (Archive.API -> FarfetchPriceScraper) para consumir o
+    scraper como uma implementação de IPriceScraper, sem o fluxo interativo de
+    login/sincronização. O progresso vai para stderr para manter o stdout limpo.
+    """
+    items = scrape_farfetch()
+    json.dump(items, sys.stdout, ensure_ascii=False)
+
+
 if __name__ == "__main__":
-    main()
+    if "--scrape-only" in sys.argv:
+        scrape_only()
+    else:
+        main()

@@ -9,6 +9,10 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<WishlistEntry> WishlistEntries { get; set; } = [];
-    public List<string> FavoriteBrands { get; set; } = [];
+
+    // Grupos favoritos por chave do schema de domínio (ex: "brand", "author").
+    // Generaliza o antigo campo fixo FavoriteBrands — ver IFavoritableGrouping.
+    public Dictionary<string, List<string>> FavoriteGroups { get; set; } = [];
+
     public List<PriceAlert> PriceAlerts { get; set; } = [];
 }

@@ -12,6 +12,7 @@ namespace Archive.API.Controllers;
 public class ItemsController(
     ICatalogService catalogService,
     ISeasonalAnalysisService seasonalAnalysisService,
+    IImageSearchProvider imageSearch,
     IProductSchema schema) : ControllerBase
 {
     private static readonly HashSet<string> CoreQueryKeys =
@@ -94,6 +95,48 @@ public class ItemsController(
     {
         var insight = await seasonalAnalysisService.GetInsightAsync(id);
         return insight is null ? NotFound() : Ok(insight);
+    }
+
+    /// <summary>Sincroniza o catálogo a partir do scraper de preços do domínio ativo
+    /// (ponto flexível <c>IPriceScraper</c>): adiciona itens novos e atualiza preços.</summary>
+    [HttpPost("sync")]
+    [Authorize]
+    [ProducesResponseType(typeof(ScrapeSyncResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Sync(CancellationToken ct) =>
+        Ok(await catalogService.SyncFromScraperAsync(ct));
+
+    /// <summary>Busca produtos por imagem usando o provedor de busca visual do domínio
+    /// ativo (ponto flexível <c>IImageSearchProvider</c>).</summary>
+    [HttpPost("search-by-image")]
+    [ProducesResponseType(typeof(IEnumerable<ImageSearchMatchResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+    public async Task<IActionResult> SearchByImage(IFormFile image, [FromQuery] int topK = 12, CancellationToken ct = default)
+    {
+        if (!imageSearch.IsAvailable)
+            return StatusCode(StatusCodes.Status503ServiceUnavailable,
+                new { error = "Busca por imagem indisponível no domínio ativo." });
+
+        if (image is null || image.Length == 0)
+            return BadRequest(new { error = "Imagem não enviada." });
+
+        await using var stream = image.OpenReadStream();
+        var matches = await imageSearch.SearchAsync(stream, topK, ct);
+
+        var results = new List<ImageSearchMatchResponse>();
+        foreach (var match in matches)
+        {
+            var product = await catalogService.GetByIdAsync(match.ProductId);
+            if (product is null) continue;
+
+            results.Add(new ImageSearchMatchResponse(
+                new ProductResponse(
+                    product.Id, product.Name, product.ImageUrl, product.ProductUrl,
+                    product.CurrentPrice, product.Currency, product.UpdatedAt, product.Attributes),
+                match.Score));
+        }
+
+        return Ok(results);
     }
 
     /// <summary>Adiciona um novo registro de preço para um produto.</summary>

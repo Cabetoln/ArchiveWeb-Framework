@@ -5,7 +5,7 @@ using Archive.API.Repositories;
 
 namespace Archive.API.Services;
 
-public class CatalogService(IItemRepository items, IProductSchema schema) : ICatalogService
+public class CatalogService(IItemRepository items, IProductSchema schema, IPriceScraper scraper) : ICatalogService
 {
     public async Task<PagedResult<ProductResponse>> SearchAsync(SearchProductsRequest req)
     {
@@ -84,6 +84,42 @@ public class CatalogService(IItemRepository items, IProductSchema schema) : ICat
         if (entry is null) return null;
 
         return new PriceHistoryResponse(entry.Id, entry.Price, entry.Currency, entry.RecordedAt, entry.Source);
+    }
+
+    public async Task<ScrapeSyncResult> SyncFromScraperAsync(CancellationToken ct = default)
+    {
+        var scraped = await scraper.ScrapeAsync(ct);
+
+        var existingByUrl = (await items.GetAllAsync())
+            .Where(p => !string.IsNullOrWhiteSpace(p.ProductUrl))
+            .GroupBy(p => p.ProductUrl!, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
+
+        int added = 0, updated = 0, unchanged = 0;
+
+        foreach (var sp in scraped)
+        {
+            if (string.IsNullOrWhiteSpace(sp.ProductUrl))
+                continue;
+
+            if (!existingByUrl.TryGetValue(sp.ProductUrl, out var current))
+            {
+                await CreateAsync(new CreateProductRequest(
+                    sp.Name, sp.Price, sp.ImageUrl, sp.ProductUrl, sp.Currency, sp.Attributes));
+                added++;
+            }
+            else if (current.CurrentPrice != sp.Price)
+            {
+                await AddPriceAsync(current.Id, new AddPriceRequest(sp.Price, sp.Currency, scraper.Name));
+                updated++;
+            }
+            else
+            {
+                unchanged++;
+            }
+        }
+
+        return new ScrapeSyncResult(scraper.Name, scraped.Count, added, updated, unchanged);
     }
 
     private static ProductResponse ToResponse(Product p) =>
