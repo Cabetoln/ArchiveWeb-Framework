@@ -11,7 +11,7 @@
       "UpdatedAt": "2025-06-20T14:30:00Z",
       "Attributes": {
         "author": "George Orwell",
-        "genre": "Ficção",
+        "genre": "Fic\u00E7\u00E3o",
         "format": "Brochura"
       }
     },
@@ -28,6 +28,216 @@
         "author": "J.R.R. Tolkien",
         "genre": "Fantasia",
         "format": "Capa dura"
+      }
+    },
+    {
+      "Id": "4c4f3cdf-680c-4d03-bddd-3caa2876e30a",
+      "Name": "The Summer I Turned Pretty Trilogy",
+      "CurrentPrice": 89.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/7719210-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL17508740W",
+      "CreatedAt": "2026-07-01T02:38:35.0269761Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0269761Z",
+      "Attributes": {
+        "author": "Jenny Han",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "f05a1733-7b80-4958-acd7-359d4bca0b43",
+      "Name": "The Picture of Dorian Gray",
+      "CurrentPrice": 134.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/14314858-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL8193416W",
+      "CreatedAt": "2026-07-01T02:38:35.0314781Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0314781Z",
+      "Attributes": {
+        "author": "Oscar Wilde",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "e928bbab-573d-478d-aa7a-5d7c8ea4ee41",
+      "Name": "Shatter Me",
+      "CurrentPrice": 115.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/6974992-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL16014245W",
+      "CreatedAt": "2026-07-01T02:38:35.0323975Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0323975Z",
+      "Attributes": {
+        "author": "Tahereh Mafi",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "4d4d92f2-4042-40da-9aa4-7d5e6525b930",
+      "Name": "The Silent Patient",
+      "CurrentPrice": 110.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/9407338-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL19096402W",
+      "CreatedAt": "2026-07-01T02:38:35.0423802Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0423803Z",
+      "Attributes": {
+        "author": "Alex Michaelides",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "87dc2196-c620-4fca-a96c-a94179a7db94",
+      "Name": "The Cruel Prince",
+      "CurrentPrice": 128.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/8361789-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL17850410W",
+      "CreatedAt": "2026-07-01T02:38:35.0431687Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0431688Z",
+      "Attributes": {
+        "author": "Holly Black",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "1cf8dfb7-b338-44e4-9cef-38b10b86b12b",
+      "Name": "Diary of a Wimpy Kid",
+      "CurrentPrice": 112.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/14376136-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL8483260W",
+      "CreatedAt": "2026-07-01T02:38:35.0436546Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0436546Z",
+      "Attributes": {
+        "author": "Jeff Kinney",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "06710c68-0e4e-4218-8ab3-4308659e5d97",
+      "Name": "It Ends With Us",
+      "CurrentPrice": 142.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/10473609-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL18020194W",
+      "CreatedAt": "2026-07-01T02:38:35.0442641Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0442642Z",
+      "Attributes": {
+        "author": "Colleen Hoover",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "ee21b0ee-4b13-4b27-a2ca-e0b8de58741b",
+      "Name": "The Invisible Man",
+      "CurrentPrice": 58.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/6419199-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL52266W",
+      "CreatedAt": "2026-07-01T02:38:35.0450407Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0450407Z",
+      "Attributes": {
+        "author": "H. G. Wells",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "400d8ef8-2f6d-41e7-8488-27e19db98d41",
+      "Name": "Powerless",
+      "CurrentPrice": 98.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/14567864-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL34774028W",
+      "CreatedAt": "2026-07-01T02:38:35.0457264Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0457264Z",
+      "Attributes": {
+        "author": "Lauren Roberts",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "39f0241a-c65e-4fb3-8fe6-fd2f35cf9102",
+      "Name": "Carmilla",
+      "CurrentPrice": 108.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/973851-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL2895536W",
+      "CreatedAt": "2026-07-01T02:38:35.0464992Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0464992Z",
+      "Attributes": {
+        "author": "Sheridan Le Fanu",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "ae85ede6-9a21-4586-8363-46d0456977df",
+      "Name": "Unravel me",
+      "CurrentPrice": 71.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/12727567-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL19963111W",
+      "CreatedAt": "2026-07-01T02:38:35.0473453Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0473454Z",
+      "Attributes": {
+        "author": "Tahereh Mafi",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "b97e7895-863e-49e0-9c99-9f19333e9fcf",
+      "Name": "The Summer I Turned Pretty",
+      "CurrentPrice": 30.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/8783502-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL5819962W",
+      "CreatedAt": "2026-07-01T02:38:35.0480529Z",
+      "UpdatedAt": "2026-07-01T02:38:35.048053Z",
+      "Attributes": {
+        "author": "Jenny Han",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "7a0aa347-40c1-4986-a002-09b1443ffb05",
+      "Name": "The Time Machine",
+      "CurrentPrice": 138.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/9009316-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL52267W",
+      "CreatedAt": "2026-07-01T02:38:35.0488798Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0488799Z",
+      "Attributes": {
+        "author": "H. G. Wells",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "ef8683b2-51d9-448e-98f2-fda3baf8d596",
+      "Name": "The Eyes of Darkness",
+      "CurrentPrice": 98.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/12547107-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL257746W",
+      "CreatedAt": "2026-07-01T02:38:35.0495424Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0495424Z",
+      "Attributes": {
+        "author": "Dean Koontz",
+        "genre": "Fic\u00E7\u00E3o"
+      }
+    },
+    {
+      "Id": "59e6d780-3eaf-4910-b636-9495558ef20b",
+      "Name": "Wuthering Heights",
+      "CurrentPrice": 76.90,
+      "Currency": "BRL",
+      "ImageUrl": "https://covers.openlibrary.org/b/id/12818862-M.jpg",
+      "ProductUrl": "https://openlibrary.org/works/OL21177W",
+      "CreatedAt": "2026-07-01T02:38:35.0501726Z",
+      "UpdatedAt": "2026-07-01T02:38:35.0501726Z",
+      "Attributes": {
+        "author": "Emily Bronte\u0308",
+        "genre": "Fic\u00E7\u00E3o"
       }
     }
   ],
@@ -63,7 +273,127 @@
       "Currency": "BRL",
       "RecordedAt": "2025-06-18T11:00:00Z",
       "Source": "curated_book_feed"
+    },
+    {
+      "Id": "35e2775d-ad54-46b8-91f7-56fe0062d50d",
+      "ProductId": "4c4f3cdf-680c-4d03-bddd-3caa2876e30a",
+      "Price": 89.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0270657Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "b3b5241f-8f02-4630-aa29-c010a504bcdf",
+      "ProductId": "f05a1733-7b80-4958-acd7-359d4bca0b43",
+      "Price": 134.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0314812Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "8243908b-0876-4db5-8537-a686c7618e22",
+      "ProductId": "e928bbab-573d-478d-aa7a-5d7c8ea4ee41",
+      "Price": 115.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0323998Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "f529a6d3-1bbf-4649-90ba-e7e850242d4a",
+      "ProductId": "4d4d92f2-4042-40da-9aa4-7d5e6525b930",
+      "Price": 110.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0423844Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "81a36f23-af29-4d8d-a733-db01eb2346bd",
+      "ProductId": "87dc2196-c620-4fca-a96c-a94179a7db94",
+      "Price": 128.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0431704Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "0feeec4f-847a-4b4a-b569-aedca3c9236b",
+      "ProductId": "1cf8dfb7-b338-44e4-9cef-38b10b86b12b",
+      "Price": 112.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0436559Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "f137547c-d964-4197-935f-781e3b68928e",
+      "ProductId": "06710c68-0e4e-4218-8ab3-4308659e5d97",
+      "Price": 142.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0442652Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "a6648b25-322e-48c9-b092-8001c32b48e2",
+      "ProductId": "ee21b0ee-4b13-4b27-a2ca-e0b8de58741b",
+      "Price": 58.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0450419Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "1252d6f4-1593-46c5-a830-2ca17d915b91",
+      "ProductId": "400d8ef8-2f6d-41e7-8488-27e19db98d41",
+      "Price": 98.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0457275Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "0d7b0af7-f9a8-4feb-86ed-40adbabe3357",
+      "ProductId": "39f0241a-c65e-4fb3-8fe6-fd2f35cf9102",
+      "Price": 108.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0465007Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "234867f1-388e-4719-8cc1-825e2770ef4c",
+      "ProductId": "ae85ede6-9a21-4586-8363-46d0456977df",
+      "Price": 71.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.047347Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "0c987c99-8fd7-4cc9-b504-4388f70fcc6b",
+      "ProductId": "b97e7895-863e-49e0-9c99-9f19333e9fcf",
+      "Price": 30.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0480544Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "3d143a33-0b80-440b-a6cd-64af0a2065d6",
+      "ProductId": "7a0aa347-40c1-4986-a002-09b1443ffb05",
+      "Price": 138.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0488811Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "bb52281d-94c4-4148-b4f1-8bdd974d0695",
+      "ProductId": "ef8683b2-51d9-448e-98f2-fda3baf8d596",
+      "Price": 98.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0495439Z",
+      "Source": "manual"
+    },
+    {
+      "Id": "94a76c32-5b11-476e-afe0-39b0b8b1dfff",
+      "ProductId": "59e6d780-3eaf-4910-b636-9495558ef20b",
+      "Price": 76.90,
+      "Currency": "BRL",
+      "RecordedAt": "2026-07-01T02:38:35.0501753Z",
+      "Source": "manual"
     }
   ],
-  "SeasonalAnalysisPending": false
+  "SeasonalAnalysisPending": true
 }

@@ -25,8 +25,8 @@ builder.Services.AddSingleton<ISeasonalAnalysisService, SeasonalAnalysisService>
 builder.Services.AddSingleton<IProductSchema, BookProductSchema>();
 
 // ── Pontos flexíveis instanciados pela aplicação Books ─────────────────────────
-// Fonte de dados própria, em C# puro — nenhuma dependência de Python.
-builder.Services.AddSingleton<IPriceScraper, CuratedBookScraper>();
+// Scraper real via HTTP (Open Library), em C# puro — nenhuma dependência de Python.
+builder.Services.AddHttpClient<IPriceScraper, OpenLibraryPriceScraper>();
 // Books não usa busca por imagem: registra o no-op (IsAvailable => false).
 builder.Services.AddSingleton<IImageSearchProvider, NoOpImageSearchProvider>();
 

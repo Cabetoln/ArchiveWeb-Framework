@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "Id": "f51b8af2-5d9e-462b-82ef-584a71ffc5de",
+    "Name": "Leitor",
+    "Email": "ol@books.test",
+    "PasswordHash": "$2a$11$pWPsppam3dLqXV0c6.3Y5u374n8WTlXbt1qZF63v6pMYXGRX7N6K2",
+    "CreatedAt": "2026-07-01T02:38:32.2024352Z",
+    "WishlistEntries": [],
+    "FavoriteGroups": {},
+    "PriceAlerts": []
+  }
+]
