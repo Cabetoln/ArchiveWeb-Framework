@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archive.Fashion", "Archive.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archive.Books", "Archive.Books\Archive.Books.csproj", "{ACBD5520-45BC-4C69-876C-6B66A469F71C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archive.Games", "Archive.Games\Archive.Games.csproj", "{A6C22845-AC77-4869-BD54-D6C535C0C457}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ACBD5520-45BC-4C69-876C-6B66A469F71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACBD5520-45BC-4C69-876C-6B66A469F71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACBD5520-45BC-4C69-876C-6B66A469F71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C22845-AC77-4869-BD54-D6C535C0C457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C22845-AC77-4869-BD54-D6C535C0C457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C22845-AC77-4869-BD54-D6C535C0C457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C22845-AC77-4869-BD54-D6C535C0C457}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

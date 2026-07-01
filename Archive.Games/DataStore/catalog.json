@@ -1,0 +1,140 @@
+{
+  "Products": [
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000001",
+      "Name": "Thank You For Your Application",
+      "CurrentPrice": 16.54,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2881370/9f715e3ef6382af6a1eb345782ecc22ecc5c658b/capsule_231x87.jpg?t=1782615447",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=gyw2I3hiAH1eWhZbOqQiAg7794cLmRAQRJfOiDeGPdg%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "Steam",
+        "rating": "Very Positive",
+        "discount": "25–50%",
+        "normalPrice": "30.58",
+        "savings": "46"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000002",
+      "Name": "Unrailed 2: Back on Track",
+      "CurrentPrice": 13.58,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2211170/8f9dea924ed490f58ba3fb1b1ec7717696df6c50/capsule_231x87_alt_assets_6.jpg?t=1781208721",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=%2BBTrEsQhJi0CANx8Tr0%2BEAXawizxUcm%2BWOIoA2eMObs%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "Steam",
+        "rating": "Very Positive",
+        "discount": "50–75%",
+        "normalPrice": "31.98",
+        "savings": "58"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000003",
+      "Name": "NBA 2K26",
+      "CurrentPrice": 8.35,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3472040/a3525b0c4590861bf02bd36129ff0d510e2f85d6/capsule_231x87_alt_assets_6.jpg?t=1782486648",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=GKIJ7VPpvf%2BrslYeeAq3F7p3nSpEFg2gYzczWDcfvwE%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "GameBillet",
+        "rating": "Mostly Positive",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "88"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000004",
+      "Name": "NBA 2K26",
+      "CurrentPrice": 9.28,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3472040/a3525b0c4590861bf02bd36129ff0d510e2f85d6/capsule_231x87_alt_assets_6.jpg?t=1782486648",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=mHuqoApe0zkYdRT7ZEN%2FopMxQtZXcObpB8BYQvmpFik%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "Gamesplanet",
+        "rating": "Mostly Positive",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "87"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000005",
+      "Name": "NBA 2K26",
+      "CurrentPrice": 9.79,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3472040/a3525b0c4590861bf02bd36129ff0d510e2f85d6/capsule_231x87_alt_assets_6.jpg?t=1782486648",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=Wau%2BWcakB0FkWtgV77FMph4fPEJPGjrtE22FRvi3PmM%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "IndieGala",
+        "rating": "Mostly Positive",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "86"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000006",
+      "Name": "NBA 2K26",
+      "CurrentPrice": 9.8,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3472040/a3525b0c4590861bf02bd36129ff0d510e2f85d6/capsule_231x87_alt_assets_6.jpg?t=1782486648",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=tA9r6b0WjGbS5fmH6CI%2F%2BS%2F6hY1n3r1EKzKeFFJZuUw%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "GamersGate",
+        "rating": "Mostly Positive",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "86"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000007",
+      "Name": "NBA 2K26",
+      "CurrentPrice": 8.82,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3472040/a3525b0c4590861bf02bd36129ff0d510e2f85d6/capsule_231x87_alt_assets_6.jpg?t=1782486648",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=dua6N5u4HYIU5lUexFlvkjLixz5RHy0a4lzdZENh64A%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "GreenManGaming",
+        "rating": "Mostly Positive",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "87"
+      }
+    },
+    {
+      "Id": "9a1e0000-0000-0000-0000-000000000008",
+      "Name": "Suicide Squad: Kill the Justice League",
+      "CurrentPrice": 3.04,
+      "Currency": "USD",
+      "ImageUrl": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/315210/capsule_231x87.jpg?t=1777940046",
+      "ProductUrl": "https://www.cheapshark.com/redirect?dealID=m%2FsKq5YJtafrqXCHu2VvhFiT76qQsq8SFeS4CsVQzjg%3D",
+      "CreatedAt": "2026-06-01T10:00:00Z",
+      "UpdatedAt": "2026-06-28T10:00:00Z",
+      "Attributes": {
+        "store": "GameBillet",
+        "rating": "Mixed",
+        "discount": "75%+",
+        "normalPrice": "69.99",
+        "savings": "96"
+      }
+    }
+  ]
+}

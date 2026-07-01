@@ -1,0 +1,25 @@
+[
+  {
+    "Id": "b47165ae-dacf-49d0-acab-bf5c9186ab15",
+    "Name": "Guigo",
+    "Email": "guigui123@gmail.com",
+    "PasswordHash": "$2a$11$oioCFmwQtZ6jkO1X63Zbh.hZXKFQhL5cVPRcyV3TSmjc3I7o20sK2",
+    "CreatedAt": "2026-07-01T04:16:04.8858923Z",
+    "WishlistEntries": [
+      {
+        "Id": "2aebfed9-fd6e-4826-b886-380ebe66937a",
+        "UserId": "b47165ae-dacf-49d0-acab-bf5c9186ab15",
+        "ProductId": "9a1e0000-0000-0000-0000-000000000005",
+        "AddedAt": "2026-07-01T04:16:44.5313894Z",
+        "Note": null
+      }
+    ],
+    "FavoriteGroups": {
+      "store": [
+        "IndieGala",
+        "Steam"
+      ]
+    },
+    "PriceAlerts": []
+  }
+]

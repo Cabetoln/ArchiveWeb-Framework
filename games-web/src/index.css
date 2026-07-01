@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #08080f;
+    color: #e8e8f6;
+    font-family: 'Rajdhani', sans-serif;
+    /* leve grade de "arcade" ao fundo */
+    background-image:
+      radial-gradient(circle at 15% -10%, rgba(34, 211, 238, 0.08), transparent 45%),
+      radial-gradient(circle at 90% 0%, rgba(233, 77, 184, 0.07), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #101020;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #242444;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #22d3ee;
+  }
+}
+
+@layer utilities {
+  .tracking-display {
+    letter-spacing: 0.18em;
+  }
+  /* corte diagonal estilo HUD nos cantos */
+  .clip-hud {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+  }
+  .text-glow-neon {
+    text-shadow: 0 0 14px rgba(34, 211, 238, 0.55);
+  }
+  .text-glow-magenta {
+    text-shadow: 0 0 14px rgba(233, 77, 184, 0.55);
+  }
+}
