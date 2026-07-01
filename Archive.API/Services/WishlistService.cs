@@ -1,3 +1,4 @@
+using Archive.API.Core.Contracts;
 using Archive.API.DTOs;
 using Archive.API.Exceptions;
 using Archive.API.Models;
@@ -5,8 +6,11 @@ using Archive.API.Repositories;
 
 namespace Archive.API.Services;
 
-public class WishlistService(IUserRepository users, IItemRepository items) : IWishlistService
+public class WishlistService(IUserRepository users, IItemRepository items, IProductSchema schema) : IWishlistService
 {
+    private string GroupingValue(Product item) =>
+        schema.FavoritableGrouping?.ExtractValue(item) ?? string.Empty;
+
     public async Task<List<WishlistEntryResponse>> GetWishlistAsync(Guid userId)
     {
         var allItems = await items.GetAllAsync();
@@ -20,7 +24,7 @@ public class WishlistService(IUserRepository users, IItemRepository items) : IWi
                 i => i.Id,
                 (w, i) => new WishlistEntryResponse(
                     w.Id, w.ProductId, i.Name,
-                    i.Attributes.GetValueOrDefault("brand") ?? string.Empty,
+                    GroupingValue(i),
                     i.CurrentPrice, i.ImageUrl, w.AddedAt, w.Note))
             .ToList();
     }
@@ -44,7 +48,7 @@ public class WishlistService(IUserRepository users, IItemRepository items) : IWi
 
         return new WishlistEntryResponse(
             entry.Id, item.Id, item.Name,
-            item.Attributes.GetValueOrDefault("brand") ?? string.Empty,
+            GroupingValue(item),
             item.CurrentPrice, item.ImageUrl, entry.AddedAt, entry.Note);
     }
 
