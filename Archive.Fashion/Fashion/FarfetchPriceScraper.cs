@@ -21,7 +21,7 @@ public class FarfetchPriceScraper(IConfiguration config, IHostEnvironment env) :
     public async Task<IReadOnlyList<ScrapedProduct>> ScrapeAsync(CancellationToken ct = default)
     {
         var python = config["FashionScraper:PythonPath"] ?? "python3";
-        var scriptRelative = config["FashionScraper:ScriptPath"] ?? "../scrape_prices.py";
+        var scriptRelative = config["FashionScraper:ScriptPath"] ?? "Fashion/scrape_prices.py";
         var scriptPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, scriptRelative));
 
         if (!File.Exists(scriptPath))

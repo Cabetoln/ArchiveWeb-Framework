@@ -10,4 +10,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Archive.API\Archive.API.csproj" />
   </ItemGroup>
+
+  <!-- Scraper Python do domínio Fashion: copiado para o output para o app ser autocontido -->
+  <ItemGroup>
+    <None Update="Fashion\scrape_prices.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
