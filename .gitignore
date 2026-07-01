@@ -3,9 +3,9 @@
 **/obj/
 
 # Node modules, build output and Vite cache
-archive-web/node_modules/
-archive-web/dist/
-archive-web/.vite/
+**/node_modules/
+**/dist/
+**/.vite/
 
 # Editor and IDE files
 .vscode/
