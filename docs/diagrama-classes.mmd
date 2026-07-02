@@ -1,0 +1,146 @@
+%% Archivé Framework — Diagrama de Classes
+%% Pontos fixos (núcleo congelado) -> Pontos flexíveis (interfaces) <|.. Implementações (plugins)
+classDiagram
+direction LR
+
+%% ===================== PONTOS FLEXÍVEIS (contratos / hot spots) =====================
+class IProductSchema {
+  <<interface>>
+  +string DomainName
+  +IReadOnlyList~AttributeDefinition~ Attributes
+  +IFavoritableGrouping FavoritableGrouping
+  +Build(CreateProductRequest) Product
+  +ApplyFilters(query, req) IQueryable~Product~
+}
+class IPriceScraper {
+  <<interface>>
+  +string Name
+  +ScrapeAsync(ct) IReadOnlyList~ScrapedProduct~
+}
+class IImageSearchProvider {
+  <<interface>>
+  +bool IsAvailable
+  +SearchAsync(stream, topK, ct) IReadOnlyList~ImageSearchResult~
+}
+class IFavoritableGrouping {
+  <<interface>>
+  +string Key
+  +string DisplayName
+  +ExtractValue(Product) string
+}
+
+%% ===================== NÚCLEO CONGELADO (pontos fixos) =====================
+class ItemsController {
+  <<frozen>>
+  Search / Sync / SearchByImage
+}
+class CatalogService {
+  <<frozen>>
+  SearchAsync / CreateAsync
+  SyncFromScraperAsync
+}
+class WishlistService {
+  <<frozen>>
+  GroupingValue(item)
+}
+class PriceAlertService {
+  <<frozen>>
+  GroupingValue(item)
+}
+class FavoriteGroupsService {
+  <<frozen>>
+  GroupingKey
+}
+
+%% pontos fixos ..> pontos flexíveis (dependem só da abstração, injetada por DI)
+ItemsController ..> IProductSchema : GetSchema
+ItemsController ..> IImageSearchProvider : search-by-image
+ItemsController ..> CatalogService
+CatalogService ..> IProductSchema : Build / ApplyFilters
+CatalogService ..> IPriceScraper : SyncFromScraper
+WishlistService ..> IProductSchema
+WishlistService ..> IFavoritableGrouping : ExtractValue
+PriceAlertService ..> IProductSchema
+PriceAlertService ..> IFavoritableGrouping : ExtractValue
+FavoriteGroupsService ..> IProductSchema
+FavoriteGroupsService ..> IFavoritableGrouping : Key
+IProductSchema ..> IFavoritableGrouping : expõe
+
+%% ===================== APLICAÇÃO FASHION =====================
+class FashionProductSchema
+class FashionBrandGrouping
+class FarfetchPriceScraper
+class ClipImageSearchProvider
+class ScrapePricesPy["scrape_prices.py (Python)"]
+FashionProductSchema ..|> IProductSchema
+FashionBrandGrouping ..|> IFavoritableGrouping
+FarfetchPriceScraper ..|> IPriceScraper
+ClipImageSearchProvider ..|> IImageSearchProvider
+FashionProductSchema *-- FashionBrandGrouping
+FarfetchPriceScraper ..> ScrapePricesPy : Process externo
+
+%% ===================== APLICAÇÃO BOOKS =====================
+class BookProductSchema
+class BookAuthorGrouping
+class OpenLibraryPriceScraper
+class NoOpImageBooks["NoOpImageSearchProvider"]
+BookProductSchema ..|> IProductSchema
+BookAuthorGrouping ..|> IFavoritableGrouping
+OpenLibraryPriceScraper ..|> IPriceScraper
+NoOpImageBooks ..|> IImageSearchProvider
+BookProductSchema *-- BookAuthorGrouping
+
+%% ===================== APLICAÇÃO GAMES =====================
+class GameProductSchema
+class GameStoreGrouping
+class CheapSharkDealScraper
+class CheapSharkClient["CheapSharkClient (Facade)"]
+class IDiscountTierStrategy {
+  <<interface>>
+  +Tiers
+  +Classify(savings)
+}
+class PercentageDiscountTierStrategy
+class NoOpImageGames["NoOpImageSearchProvider"]
+GameProductSchema ..|> IProductSchema
+GameStoreGrouping ..|> IFavoritableGrouping
+CheapSharkDealScraper ..|> IPriceScraper
+NoOpImageGames ..|> IImageSearchProvider
+PercentageDiscountTierStrategy ..|> IDiscountTierStrategy
+GameProductSchema *-- GameStoreGrouping
+GameProductSchema ..> IDiscountTierStrategy : Strategy
+CheapSharkDealScraper ..> CheapSharkClient : Facade (HTTP)
+CheapSharkDealScraper ..> IDiscountTierStrategy : Strategy
+
+%% ===================== RAÍZES DE COMPOSIÇÃO (Program.cs) =====================
+class ProgramFashion["Program (Archive.Fashion)"]
+class ProgramBooks["Program (Archive.Books)"]
+class ProgramGames["Program (Archive.Games)"]
+ProgramFashion ..> FashionProductSchema : registra no DI
+ProgramFashion ..> FarfetchPriceScraper : registra no DI
+ProgramFashion ..> ClipImageSearchProvider : registra no DI
+ProgramFashion ..> CatalogService : registra núcleo
+ProgramBooks ..> BookProductSchema : registra no DI
+ProgramBooks ..> OpenLibraryPriceScraper : registra no DI
+ProgramBooks ..> NoOpImageBooks : registra no DI
+ProgramBooks ..> CatalogService : registra núcleo
+ProgramGames ..> GameProductSchema : registra no DI
+ProgramGames ..> CheapSharkDealScraper : registra no DI
+ProgramGames ..> PercentageDiscountTierStrategy : registra no DI
+ProgramGames ..> NoOpImageGames : registra no DI
+ProgramGames ..> CatalogService : registra núcleo
+
+%% ===================== ESTILOS POR CAMADA =====================
+classDef frozen fill:#1e3a5f,stroke:#8ab4f8,color:#fff
+classDef contract fill:#3d2c00,stroke:#f7c948,color:#fff
+classDef fashion fill:#2d1b3d,stroke:#c58af9,color:#fff
+classDef books fill:#12331f,stroke:#79d297,color:#fff
+classDef games fill:#3d1f1f,stroke:#f28b82,color:#fff
+classDef root fill:#333,stroke:#aaa,color:#fff
+
+cssClass "ItemsController,CatalogService,WishlistService,PriceAlertService,FavoriteGroupsService" frozen
+cssClass "IProductSchema,IPriceScraper,IImageSearchProvider,IFavoritableGrouping" contract
+cssClass "FashionProductSchema,FashionBrandGrouping,FarfetchPriceScraper,ClipImageSearchProvider,ScrapePricesPy" fashion
+cssClass "BookProductSchema,BookAuthorGrouping,OpenLibraryPriceScraper,NoOpImageBooks" books
+cssClass "GameProductSchema,GameStoreGrouping,CheapSharkDealScraper,CheapSharkClient,IDiscountTierStrategy,PercentageDiscountTierStrategy,NoOpImageGames" games
+cssClass "ProgramFashion,ProgramBooks,ProgramGames" root
